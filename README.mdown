@@ -1,0 +1,630 @@
+# Features
+
+
+### Recipe & Category Features
+* Search recipes by Recipe Name, Ingredient, and Instruction text
+* Scale recipe
+* Export recipe to printable web page, RecipeML (XML), and Meal-Master formats (this product is RecipeML compatible)
+* Email recipe to friend
+* Editable, unlimited-depth category heirarchy
+* Recipes can be in an unlimited number of categories
+* Users can edit recipes they've submitted
+
+### User Features
+* Email-authenticated user registration
+* User-editable profiles
+* User-editable account info
+* Change password
+* Email-based password reminder
+* Favorite recipe bookmarks
+* SHA-1-authenticated tamper-proof user info HTTP cookies
+* User-selectable interface language (l10n/i18n support)
+* Centigrade <-> Farenheit temperature converter
+* Brix <-> Beaumé sweetness converter
+
+### Administrative Features
+* Fine-grained access control
+* Recipe editor
+* User editor
+* Category editor
+* System information display
+* User login history
+* Choice of databases: MySQL, Postgres, or Oracle
+* Fully cuztomizable: all output is templatized and localized
+* Multilingual support with configurable default language
+* Module prober checks for required Perl modules
+* Database connection checker utility
+
+
+
+---
+
+
+
+# Requirements
+
+
+### Web Server
+that can execute CGI scripts like [Apache](http://httpd.apache.org/) or [nginx](http://nginx.org/).
+
+
+### [Perl](http://www.perl.com/)
+version 5.004 or higher
+
+
+### Perl Modules
+[CGI](http://search.cpan.org/~lds/CGI.pm-3.00/CGI.pm) library. Your probably got this with Perl.
+
+[DBI](http://search.cpan.org/author/TIMB/DBI-1.38/DBI.pm) Generic database interface
+
+[DBD::Pg](http://search.cpan.org/author/MERGL/pgsql_perl5-1.9.0/Pg.pm) Database driver for Postgres *or* [DBD::mysql](http://search.cpan.org/author/RUDY/DBD-mysql-2.9002/) Database driver for MySQL *or* [DBD::Oracle](http://search.cpan.org/author/TIMB/DBD-Oracle-1.15/) - Database driver for Oracle
+
+[Math::Fraction](http://search.cpan.org/author/KEVINA/Fraction-v.53b/Fraction.pm) - Decimal <-> string fraction conversion
+
+[Digest::SHA1](http://search.cpan.org/author/GAAS/Digest-SHA1-2.04/SHA1.pm) - SHA-1 digest/hash for tamper-proof user cookies
+
+[Net::SMTP](http://search.cpan.org/author/GAAS/Digest-SHA1-2.04/SHA1.pm) - Send email via SMTP. Not required if you use sendmail.
+
+
+### Database
+[Postgres](http://www.postgresql.org/) v7.x or higher *or* [MySQL](http://www.mysql.com/) v3.2 or higher *or* [Oracle](http://www.oracle.com/) v8 or higher (7 should work, but is untested)
+
+**If you use Postgres 8.x or higher**, you *must* add WITH OIDS to the end of each table definition.
+
+
+### [sendmail](http://www.sendmail.org/)
+Not required if you use the Net::SMTP module.
+
+
+
+---
+
+
+
+# Installation Instructions
+
+
+### Verify that you have all the required stuff installed and working
+You can use the Modlule Detector at http://recipants-installation-url/util/test-moduldes.cgi to help figure out which modules installed and which are missing. 
+
+###  Unpack the distribution archive
+This will create a tree that looks a lot like this:
+
+    .cgi and .pl files - The program files
+    recipants.cfg.pl   - Program configuration file
+    static/            - Holds static Web content: CSS & exports
+    sql/               - SQL scripts
+    templates/         - Template root, each language has a
+                         subdirectory here named by its language code
+                         (e.g. 'en')
+    util/              - Utilities
+
+
+###  Set up the database
+Create a database and database user for ReciPants. See your database's documentation for instructions.
+
+Load the DB schema and reference data:
+
+Go to the sql directory.
+Execute the appropriate tables SQL script for your database (e.g. tables-postgres.sql for Postgres, tables-mysql.sql for MySQL, tables-oracle.sql for Oracle). This will create all the database objects that ReciPants needs.
+Execute the ref_data.sql SQL script. This will create the reference data that ReciPants needs, including the admin user account.
+
+
+### Set up email
+You can either use an SMTP server or talk directly to a local copy of sendmail.
+
+In either case, in order for ReciPants to be able to send email as a user other than the owner of the scripts without a warning, it will likely be necessary to do some configuration. For sendmail, you will probably have to include said owner in the trusted-users file (likely /etc/mail/trusted-users). It is likely that you will need root access to do this. 
+
+
+### Configure ReciPants
+Open the file recipants.cfg.pl in your favorite editor and have at it - the directions are in the file.
+
+For your conveneince, there's a backup of the file called recipants.cfg.pl.DIST with all the default values that you can make use of if your copy gets fubard.
+
+Because this file contains all the information necessary to connect to your database, it is strongly suggested that you move this file out of your Web server's document root to prevent anyone from downloading it. If you do so, you'll have to edit the file librecipants.pl—look for the line that says require "recipants.cfg.pl"; and change it to the right location.
+
+Failing that, ScriptAlias-ing your ReciPants directory is probably a good idea—that way, if someone requests the file, the Web server should try to execute it (which won't produce anything meaningful) instead of just sending the file. 
+
+
+### Change the admin password
+ReciPants comes with one user called "admin" that has "All Access" privileges (the equivalent of root in *nix-land) who can do anything in the system.
+
+Log in to ReciPants. Username admin, password change_me. CHANGE THE PASSWORD IMMEDIATELY!
+
+The password it ships with is the same for everybody, so if you don't change it, anyone can log with the admin account and do whatever they want in your ReciPants system. This is probably Not The Desired Effect(tm). Don't Say I Didn't Warn Ya(tm).
+
+To change the admin password, fire up your ReciPants installation in your Web browser, sign in to the admin account, click the ever-so-surprisingly named "Change My Password" link, and follow the directions.
+
+
+
+---
+
+
+
+# Frequently Asked Questions
+
+
+## Troubleshooting
+
+
+### Why aren't login cookies working? 
+
+Why can't I sign in? I sign in and go to change my password and it says "Crapcakes! You have to be logged in to do that.".
+ReciPants isn't getting your login cookie.
+First, make sure cookies are enabled in your browser.
+
+If that doesn't do it, there is a mismatch between the cookie server name and path specified in recipants.cfg.pl vs. the address it's being accessed by in your browser. The names must match even if two different values resolve to the same host, i.e. if $cookie_domain is set to "127.0.0.1" but it's being accessed as "localhost" in your browser, the cookie won't get sent back to ReciPants.
+
+Also check the $cookie_path variable. Try setting it to "/" to get you started.
+
+If your browser has a tool that lets you examine cookies, check to see 1) if the cookie is there (it's called "rp_user") and 2) what the domain and path values are. Compare against the URL you're accessing ReciPants from.
+
+If it doesn't have a cookie inspector, there's a Java application called Burp Proxy that will intercept and let you examine and change all of your Web traffic, including server headers (and therefore cookies). If you have it set to intercept, you have to click the "Forward" button to get anything to happen.
+
+You can download Burp Proxy from [http://portswigger.net/burp/proxy.html](http://portswigger.net/burp/proxy.html)
+
+
+### Why do I get a "Forbidden - You don't have permission to access /recipants/xxx.cgi on this server." error from my Web server when I try to access a ReciPants script?
+There are two possibilities:
+1) Your scripts don't have execute permission (though they should unless you've explicitly changed them). See the man page for chmod.
+
+2) Your Web server isn't properly set up to execute CGI programs.
+
+If you're using Apache, see the How-To document "Apache Tutorial: Dynamic Content with CGI" for Apache v2.0.x or Apache v1.3.x.
+
+If you're using another Web server, see its documentation.
+
+
+### Why do I get a "Permission denied" error when exporting recipes?
+ReciPants doesn't have write permission on the export directories (default: static/exported-recipes/*). On unix-like systems, see the man page for chmod.
+
+### Why is there no language menu?
+The language menu only appears if there's more than one language installed. See the Translation/Localization Documentation for more information.
+
+
+
+## Bugs
+
+### Why do I get a SQL syntax error when clicking on Categories in v1.0.x while using MySQL?
+Apparently, AUTO_INCREMENT values start with 1 instead of 0 in MySQL v4.x. As the ID number of the master default category must be 0, the whole thing barfs.
+SOLUTION:
+
+Upgrade to ReciPants v1.1 or higher.
+
+-- or --
+
+Issue the following SQL statement to your database:
+
+    UPDATE categories SET category_id = 0 WHERE parent = -1;
+
+
+### Why do ingredient quantities show up as 0 or only whole numbers in v1.0.x and v1.1 while using MySQL?
+The column that holds ingredient quantities was declared as the wrong type—the NUMERIC type stores decimals in Postgres, but in MySQL it only stores whole numbers, causing fractional values to get rounded off to the nearest whole number.
+SOLUTION:
+
+Upgrade to ReciPants v1.1.1 or higher.
+
+-- or --
+
+Issue the following SQL statement to MySQL:
+
+    ALTER TABLE 'ingredients' CHANGE 'qty' 'qty' DECIMAL(10, 5) NOT NULL;
+
+...and update your existing ingredient quantities.
+
+Postgres databases are not effected.
+
+
+### Why do I get a "Looks like a bad ingredient format. Please check the Ingredients box." error when entering fractional ingredient quantities in v1.0.x?
+The code that validates the ingredient format was broken. It was fixed in v1.1.
+SOLUTION:
+
+Upgrade to ReciPants v1.1 or higher.
+
+
+### Why do I get an orphaned recipe or incomplete ingredients when saving a recipe with valid info except bad ingredient formats in v1.0.x?
+ReciPants validated the format or each ingredient immediately before saving it, so it was possible to not catch the error until it was too late. It was fixed in v1.1.
+SOLUTION:
+
+Upgrade to ReciPants v1.1 or higher.
+
+
+### I installed v1.1.1 but it says it's v1.1. What gives?
+I'm a dork—I forgot to change the application version number.
+SOLUTION:
+
+If you feel like it (it doesn't really make a difference other than helping you keep track of what version you have installed), open the file recipants.cfg.pl, scroll to the bottom, and change
+
+    $app_version = "1.1";
+
+to
+
+    $app_version = "1.1.1";
+
+
+### Why doesn't ReciPants accept email addresses with hyphens in the mailbox name in versions before 1.2?
+The code that verifies the format of email addresses was broken. It was fixed in v1.2.
+SOLUTION:
+
+Upgrade to ReciPants v1.2 or higher.
+
+
+### Why do I get a SQL error when searching for recipes using a single quote or apostrophe in the search string in versions before 1.2?
+The search code didn't escape single quotes, which is the quote character in SQL, so the database got confused. It was fixed in v1.2.
+SOLUTION:
+
+Upgrade to ReciPants v1.2 or higher.
+
+
+
+## General
+
+### Why is there no prep time field for recipes?
+It's my feeling that as different people prep at very different speeds, each individual will be able to get a better feel for how long a given recipe will take by looking at it themselves.
+
+### Why do ingredient quantities entered as decimals show up as fractions?
+ReciPants can't scale recipes or convert between measurement systems if it doesn't have an actual numeric value for the quantity, so we use the Math::Fraction Perl module to convert all incoming measurements to decimal and all outgoing measurements to mixed fractions (or whole numbers as appropriate, the module figures it all out nicely).
+
+### Why doesn't ReciPants use fancy graphics for navigation?
+ReciPants supports localization, which means that the interface can be translated into other languages. If the navigation were pictures instead of text, nobody in their right mind would translate it because of the heinous amount of work that would be involved in making pictures rather than text.
+
+
+
+---
+
+
+
+# Overview for Developers
+
+The source is fairly well documented, but here are a few starting points:
+
+**All scripts** must require the file librecipants.pl, which contains all functions and globals common to more than one script.
+
+The **first thing** that any script should do is call InitUser(). This reads the user and language cookies and sets a few important golbals:
+
+* $logged_in is a Boolean flag.
+* $user_id contains the user ID of the current user if they are logged in and is false otherwise.
+* $language contains the two-letter language code for the current user.
+
+All **templates** are retrieved using GetTemplate(), which will return the contents of the template file in the right language for the user. Dynamic value place-holders in templates start with REP_ (for **REP**LACE), which are substituted prior to being output.
+
+All **text** not coming from the database or a template file is in the file localized_strings.pl. The program has no hard-coded text values outside of this file.
+
+All **output** is handled by ShowPage(), which figures out a bunch of stuff like the language and what menu options are available based on login status and administrative permissions. So, you build an output buffer and hand it off to ShowPage() along with any cookies you may wish to set. If you debug with print like I do, just print the MIME header before printing your debug values (and remember to take it out when you're done).
+
+Most **error handling** is done with PrintErrorExit(), which outputs an error screen and cleanly exits the program.
+
+All **SQL statements** are handled by ExecSQL(), which connects to the database if necessary, executes the statement, and returns a statement handle. The database connection ($dbh) and statement ($sth) handles are global, while row handles are not.
+
+**All SQL result tuples are retrieved as hash references.** While there is a penalty for this, it eliminates brittle positional dependence.
+
+**All SQL statements use explicit column lists instead of *.** Also eliminates brittle positional dependence.
+
+To **exit** the program, call CleanExit(). 
+
+
+## Time in the Database
+
+To avoid having to code a special case for every supported database, time is stored as a string containing unix time rather than DB-native timestamp types. This avoids a lot of mess and makes the application itself 2038-compliant. 
+
+
+## Coding Conventions
+
+**Emphasis is on legibility and maintainability rather than trick compact code.** This codebase is designed to be as hack-accessible as possible to as many people as possible. Since a lot of people know a little bit about Perl, the use of certain language features has been foregone in the interest of general grokability. ReciPants does not use object oriented-ish conventions or some of the more powerful or terse but less-understood library functions and syntax. It avoids excessively nested function calls, makes order of operations explicit with parentheses in spite of operator precedence, uses globals, and brute forces certain operations that could be made more efficient for the computer, but less efficient to understand. This is on purpose.
+
+ReciPants uses bottom-up design.
+
+Blocks are indented with tabs, and tabs only.
+
+Tab stops are set to 4.
+
+Every function has a comment block above it stating its arguments, return value, and a brief description of what it does.
+
+Local copies of global variables and local variables with the otherwise same names as globals start with l_ (the letter "ell" for "local", not the number one).
+
+Functions that are only accessed from one script stay in that file; functions that are used by more than one script go in librecipants.pl.
+
+
+
+---
+
+
+
+# Translation/Localization Instructions
+
+ReciPants is currently available in English, with Spanish and Danish versions in the works.
+You want to translate the ReciPants interface into another language? (It does not mean translating all the recipes!) Kickass! Here's how: 
+
+
+## Find Your Language Code
+Scroll down to Language Codes to get the code for the language that you want to translate ReciPants into.
+
+ReciPants uses the standard ISO 639 two-letter, lower case language codes. 
+
+
+## Do the Templates
+Go to the templates directory. In there will be a few other directories like en and da. Each directory in there is named by the language code of what's inside. (en has the English templates, da has the Danish templates, etc.)
+
+Make a new directory named with the language code of the language you want to translate into (let's say you're translating into Danish, so you make a directory called da).
+
+Copy (don't move) all the files in the directory of the language that you're tranlating FROM into the directory you just made. So for translating from English to Danish, you copy everything in the en directory into the da directory.
+
+Now go into the directory you just made that has the newly copied files in it and translate each HTML file.
+
+Do NOT translate the .xml files
+
+Do NOT change any of the names of the FORM elements or anything that starts with "REP_" or nothing will work! 
+
+
+## Do the Strings File
+Open up the localized_strings.pl file. This contains all of the text that doesn't go in the templates (e.g. if something goes wrong and the program needs to tell you what happened).
+
+In the file, you'll see a bunch of stuff that looks like this:
+
+
+    %ls_ants_in_my_pants = (
+	    en => 'Got ants in my pants',
+	    es => 'Tengo hormigas i mi pantalones',
+        );
+		
+The "%ls_something" is the name of the variable. (They all start with ls_ for Localized String.)
+
+The en, es, and whatever else parts are the language code again.
+
+The text after the => in the single quotes in the string in that language.
+
+Remember the comma at the end!
+
+If you want to use a ' (single quote) character, you need to put a backslash before it. (If you don't the program will, in technical parlance, "blow up real bad".) For example:
+
+The wrong way:
+
+    en => 'You won't really throw that poo at me!',
+		
+The right way:
+
+    en => 'You won\'t really throw that poo at me!',
+		
+So if you want to add a Danish entry, you would add a line with da and the translation:
+
+    %ls_ants_in_my_pants = (
+    	en => 'I got ants in my pants',
+    	es => 'Yo tengo hormigas i mi pantalones',
+    	da => 'Jeg har myrener i bukserner',
+    );
+		
+
+## Update the Supported Languages List
+Add your new language code. Look for @supported_languages at neart the top of the localized_strings.pl file and add your new code to the list. 
+
+
+## Please commit your updated files!
+Be sure to include your name, email address, and Web site URL so I can credit you appropriately! (If you'd rather I not share your email address or URL, just say so.) 
+
+That's it!
+
+
+## Language Codes
+Taken from [http://ftp.ics.uci.edu/pub/ietf/http/related/iso639.txt](http://ftp.ics.uci.edu/pub/ietf/http/related/iso639.txt)
+
+    aa Afar
+    ab Abkhazian
+    af Afrikaans
+    am Amharic
+    ar Arabic
+    as Assamese
+    ay Aymara
+    az Azerbaijani
+
+    ba Bashkir
+    be Byelorussian
+    bg Bulgarian
+    bh Bihari
+    bi Bislama
+    bn Bengali; Bangla
+    bo Tibetan
+    br Breton
+
+    ca Catalan
+    co Corsican
+    cs Czech
+    cy Welsh
+
+    da Danish
+    de German
+    dz Bhutani
+
+    el Greek
+    en English
+    eo Esperanto
+    es Spanish
+    et Estonian
+    eu Basque
+
+    fa Persian
+    fi Finnish
+    fj Fiji
+    fo Faroese
+    fr French
+    fy Frisian
+
+    ga Irish
+    gd Scots Gaelic
+    gl Galician
+    gn Guarani
+    gu Gujarati
+
+    ha Hausa
+    he Hebrew (formerly iw)
+    hi Hindi
+    hr Croatian
+    hu Hungarian
+    hy Armenian
+
+    ia Interlingua
+    id Indonesian (formerly in)
+    ie Interlingue
+    ik Inupiak
+    is Icelandic
+    it Italian
+    iu Inuktitut
+
+    ja Japanese
+    jw Javanese
+
+    ka Georgian
+    kk Kazakh
+    kl Greenlandic
+    km Cambodian
+    kn Kannada
+    ko Korean
+    ks Kashmiri
+    ku Kurdish
+    ky Kirghiz
+
+    la Latin
+    ln Lingala
+    lo Laothian
+    lt Lithuanian
+    lv Latvian, Lettish
+
+    mg Malagasy
+    mi Maori
+    mk Macedonian
+    ml Malayalam
+    mn Mongolian
+    mo Moldavian
+    mr Marathi
+    ms Malay
+    mt Maltese
+    my Burmese
+
+    na Nauru
+    ne Nepali
+    nl Dutch
+    no Norwegian
+
+    oc Occitan
+    om (Afan) Oromo
+    or Oriya
+
+    pa Punjabi
+    pl Polish
+    ps Pashto, Pushto
+    pt Portuguese
+
+    qu Quechua
+
+    rm Rhaeto-Romance
+    rn Kirundi
+    ro Romanian
+    ru Russian
+    rw Kinyarwanda
+
+    sa Sanskrit
+    sd Sindhi
+    sg Sangho
+    sh Serbo-Croatian
+    si Sinhalese
+    sk Slovak
+    sl Slovenian
+    sm Samoan
+    sn Shona
+    so Somali
+    sq Albanian
+    sr Serbian
+    ss Siswati
+    st Sesotho
+    su Sundanese
+    sv Swedish
+    sw Swahili
+
+    ta Tamil
+    te Telugu
+    tg Tajik
+    th Thai
+    ti Tigrinya
+    tk Turkmen
+    tl Tagalog
+    tn Setswana
+    to Tonga
+    tr Turkish
+    ts Tsonga
+    tt Tatar
+    tw Twi
+
+    ug Uighur
+    uk Ukrainian
+    ur Urdu
+    uz Uzbek
+
+    vi Vietnamese
+    vo Volapuk
+
+    wo Wolof
+
+    xh Xhosa
+
+    yi Yiddish (formerly ji)
+    yo Yoruba
+
+    za Zhuang
+    zh Chinese
+    zu Zulu
+	
+    Technical contents of ISO 639:1988 (E/F)
+    "Code for the representation of names of languages".
+    Typed by Keld.Simonsen@dkuug.dk 1990-11-30 
+    Minor corrections, 1992-09-08 by Keld Simonsen
+    Sundanese corrected, 1992-11-11 by Keld Simonsen
+    Telugu corrected, 1995-08-24 by Keld Simonsen
+    Hebrew, Indonesian, Yiddish corrected 1995-10-10 by Michael Everson
+    Inuktitut, Uighur, Zhuang added 1995-10-10 by Michael Everson
+    Sinhalese corrected, 1995-10-10 by Michael Everson
+    Faeroese corrected to Faroese, 1995-11-18 by Keld Simonsen
+    Sangro corrected to Sangho, 1996-07-28 by Keld Simonsen
+
+    Two-letter lower-case symbols are used.
+    The Registration Authority for ISO 639 is Infoterm, Osterreichisches
+    Normungsinstitut (ON), Postfach 130, A-1021 Vienna, Austria.
+
+
+
+---
+
+
+
+# Credits
+
+## Programming
+* Nick Grossman: Lead developer
+* [Ben Mehlman](http://cownow.com/): Category tree, some other stuff, sound technical opinions
+* Marc Hartstein: Some non-trivial regular expressions
+* Steve Moore: Fixed ingredient quantity column type in MySQL
+* [George Howell](http://www.refundersrefuge.com/): Added option for remote database host
+* [Brad Fritz](http://fritzfam.com/): Fixed email validation regular expression
+* [Jon McClintock](http://weak.org/): Anti-Cross-Site Scripting security improvements, various bug fixes 
+
+
+## Third-party modules
+* Lincoln D. Stein and contributors: CGI Perl module
+* Tim Bunce and contributors: DBI Perl module, DBD-Oracle Perl module
+* Edmund Mergl: DBD-Pg Perl module
+* Rudy Lippan: DBD-mysql Perl module
+* Kevin Atkinson: Math::Fraction Perl module
+* [Gisle Aas](http://gisle.aas.no/): Digest-SHA1 Perl module
+* The authors of [Scoop](http://scoop.kuro5hin.org/): I modified their GPL'd keygen.pl script for host key generation. 
+
+
+## Testing
+* Jonathan Block
+* Chris Ellmann
+* Marc Hartstein
+* Vernon Kay
+* Pablo Mayrgundter
+* Ben Mehlman
+* Udi Schlessinger
+* Kris Van Riper
+* Trey Van Riper
+* Mike Wolstat
+* The users of [Uncensored! BBS](http://uncnsrd.citadel.org/)
