@@ -15,21 +15,21 @@ CREATE TABLE categories (
 	parent 				INT4 			NOT NULL,
 	name 				VARCHAR(256)	NOT NULL,
 	CONSTRAINT 			pk_categories PRIMARY KEY (category_id)
-);
+) WITH OIDS;
 
 
 CREATE TABLE category_entries (
 	recipe_id 			INT4 			NOT NULL,
 	category_id			INT4 			NOT NULL,
 	CONSTRAINT			pk_category_entries PRIMARY KEY (recipe_id, category_id)
-);
+) WITH OIDS;
 
 
 CREATE TABLE ingredient_types (
 	ingredient_type		SERIAL			NOT NULL,
 	name 				VARCHAR(100) 	NOT NULL,
 	CONSTRAINT 			pk_ingredient_types PRIMARY KEY (ingredient_type)
-);
+) WITH OIDS;
 
 
 CREATE TABLE ingredients (
@@ -42,14 +42,14 @@ CREATE TABLE ingredients (
 	qty 				NUMERIC			NOT NULL,
 	unit_id 			INT4 			NOT NULL,
 	CONSTRAINT 			pk_ingredients PRIMARY KEY (ingredient_id)
-);
+) WITH OIDS;
 
 
 CREATE TABLE instructions (
 	recipe_id 			INT4 			NOT NULL,
 	step_num 			INT4 			NOT NULL,
 	step_text 			VARCHAR(4000)
-);
+) WITH OIDS;
 
 
 CREATE TABLE recipes (
@@ -62,7 +62,7 @@ CREATE TABLE recipes (
 	mod_utime 			VARCHAR(20)  	NOT NULL,
 	author_user_id 		INT4			NOT NULL,
 	CONSTRAINT 			pk_recipes PRIMARY KEY (recipe_id)
-);
+) WITH OIDS;
 
 
 CREATE TABLE units (
@@ -70,7 +70,7 @@ CREATE TABLE units (
 	name 				VARCHAR(100) 	NOT NULL,
 	abbreviation 		VARCHAR(10) 	NOT NULL,
 	CONSTRAINT 			pk_units PRIMARY KEY (unit_id)
-);
+) WITH OIDS;
 
 
 CREATE TABLE user_access_grants (
@@ -78,7 +78,7 @@ CREATE TABLE user_access_grants (
 	permission_id 		INT2 			NOT NULL,
 	granter_user_id 	INT4 			NOT NULL,
 	grant_utime			VARCHAR(20) 	NOT NULL
-);
+) WITH OIDS;
 
 
 CREATE TABLE user_permissions (
@@ -86,14 +86,14 @@ CREATE TABLE user_permissions (
 	short_description 	VARCHAR(100) 	NOT NULL,
 	long_description 	VARCHAR(1000)	,
 	CONSTRAINT 			pk_user_permissions PRIMARY KEY (permission_id)
-);
+) WITH OIDS;
 
 
 CREATE TABLE user_recipe_bookmarks (
 	user_id 			INT4 			NOT NULL,
 	recipe_id 			INT4 			NOT NULL,
 	CONSTRAINT 			pk_user_recipe_bookmarks PRIMARY KEY (user_id, recipe_id)
-);
+) WITH OIDS;
 
 
 CREATE TABLE users (
@@ -108,7 +108,7 @@ CREATE TABLE users (
 	create_utime 		VARCHAR(20)		NOT NULL,
 	CONSTRAINT 			pk_users PRIMARY KEY (user_id),
 	CONSTRAINT 			indx_unq_users_user_name_lower UNIQUE (user_name_lower)
-);
+) WITH OIDS;
 
 
 CREATE TABLE login_log (
@@ -116,7 +116,7 @@ CREATE TABLE login_log (
 	ip					VARCHAR(16)		,
 	hostname			VARCHAR(255)	,
 	login_utime			VARCHAR(20)		NOT NULL
-);
+) WITH OIDS;
 
 
 
