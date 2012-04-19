@@ -4,7 +4,7 @@
 # File      : recipe_editor.cgi
 # Program   : ReciPants ( http://recipants.photondetector.com/ )
 # Purpose	: Handles recipe creation and editing.
-# Version   : 1.1
+# Version   : 1.1.1
 # Author    : Nick Grossman <nick@photondetector.com>
 # Tab stops : 4
 #

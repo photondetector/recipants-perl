@@ -4,7 +4,7 @@
 # File      : category_editor.cgi
 # Purpose   : Category editing routines.
 # Program   : ReciPants ( http://recipants.photondetector.com/ )
-# Version   : 1.1
+# Version   : 1.1.1
 # Author    : Nick Grossman <nick@photondetector.com>
 # Tab stops : 4
 #

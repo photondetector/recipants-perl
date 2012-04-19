@@ -2,7 +2,7 @@
 # File      : localized_strings.pl
 # Purpose   : Localized strings for programatically-generated messages.
 # Program   : ReciPants ( http://recipants.photondetector.com/ )
-# Version   : 1.1
+# Version   : 1.1.1
 # Author    : Nick Grossman <nick@photondetector.com>
 # Tab stops : 4
 #
