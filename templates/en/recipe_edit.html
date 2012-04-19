@@ -1,0 +1,203 @@
+<SCRIPT LANGUAGE="JavaScript">
+<!--
+	// This is the ingredient formatting widget
+	function AddIngredient() {
+		if(document.forms.recipe_edit_form.ing_name.value == "" || document.forms.recipe_edit_form.ing_qty.value == "") {
+			alert("You must fill in an ingredient name and a quantity");
+			return(false);
+		}
+
+		document.forms.recipe_edit_form.ingredients.value = 
+			document.forms.recipe_edit_form.ingredients.value +
+			document.forms.recipe_edit_form.ing_name.value + "*" +
+			document.forms.recipe_edit_form.ing_qty.value  + "*" +
+			document.forms.recipe_edit_form.ing_unit.value + '\n';
+			document.forms.recipe_edit_form.ing_name.value = "";
+
+		document.forms.recipe_edit_form.ing_qty.value  = "";
+		document.forms.recipe_edit_form.ing_name.focus();
+	}
+// -->
+</SCRIPT>
+
+<FORM ACTION="recipe_editor.cgi" METHOD="POST" NAME="recipe_edit_form">
+<INPUT TYPE="hidden" NAME="cmd" VALUE="REP_CGI_CMD">
+<INPUT TYPE="hidden" NAME="recipe_id" VALUE="REP_RECIPE_ID">
+
+REP_ERROR_MESSAGE
+
+<TABLE BORDER="0" CELLSPACING="0" CELLPADDING="3" WIDTH="100%">
+<TR>
+	<TD ALIGN="LEFT" BGCOLOR="#CCFF99">
+		<SPAN CLASS="section-head">Recipe Name</SPAN>
+	</TD>
+</TR><TR>
+	<TD ALIGN="LEFT" BGCOLOR="#CCCCCC">
+		<SPAN CLASS="text">
+		<INPUT TYPE="text" NAME="name" VALUE="REP_NAME" SIZE="35">
+		</SPAN>
+	</TD>
+</TR>
+</TABLE>
+
+<BR>
+
+<TABLE BORDER="0" CELLSPACING="0" CELLPADDING="3" WIDTH="100%">
+<TR>
+	<TD ALIGN="LEFT" BGCOLOR="#CCFF99" COLSPAN="3">
+		<SPAN CLASS="section-head">Ingredients</SPAN>
+	</TD>
+</TR><TR>
+	<TD ALIGN="LEFT" BGCOLOR="#99CCFF" COLSPAN="3">
+		<SPAN CLASS="text">
+		Enter name, quantity, and measurement and click <B>Add</B> for each
+		ingredient, which will appear formatted in the box below...
+		</SPAN>
+	</TD>
+</TR><TR ALIGN="LEFT" BGCOLOR="#CCCCCC">
+	<TD ALIGN="LEFT"><SPAN CLASS="text"><B>Ingredient</B></SPAN></TD>
+	<TD ALIGN="RIGHT"><SPAN CLASS="text"><B>Qty.</B></SPAN></TD>
+	<TD ALIGN="LEFT"><SPAN CLASS="text"><B>Unit</B></SPAN></TD>
+</TR><TR BGCOLOR="#CCCCCC">
+	<TD ALIGN="LEFT">
+		<SPAN CLASS="text">
+		<INPUT TYPE="text" NAME="ing_name" SIZE="17">
+		</SPAN>
+	</TD>
+	<TD ALIGN="RIGHT">
+		<SPAN CLASS="text">
+		<INPUT TYPE="text" NAME="ing_qty" SIZE="3">
+		</SPAN>
+	</TD>
+	<TD ALIGN="LEFT">
+		<SPAN CLASS="text">
+		<NOBR>
+		<SELECT NAME="ing_unit">
+			<OPTION VALUE="g">grams</OPTION>
+			<OPTION VALUE="kg">kilograms</OPTION>
+			<OPTION VALUE="ml">mililiters</OPTION>
+			<OPTION VALUE="l">liters</OPTION>
+			<OPTION VALUE="tsp">teaspoons</OPTION>
+			<OPTION VALUE="tbsp">Tablespoons</OPTION>
+			<OPTION VALUE="floz">fluid ounces</OPTION>
+			<OPTION VALUE="c">cups</OPTION>
+			<OPTION VALUE="pt">pints</OPTION>
+			<OPTION VALUE="qt">quarts</OPTION>
+			<OPTION VALUE="gal">gallons</OPTION>
+			<OPTION VALUE="oz">ounces</OPTION>
+			<OPTION VALUE="lb">pounds</OPTION>
+			<OPTION VALUE="pinches">pinches</OPTION>
+			<OPTION VALUE="ea">each</OPTION>
+		</SELECT>
+		<INPUT TYPE="button" VALUE="Add" onClick="javascript:AddIngredient();">
+		</NOBR>
+		</SPAN>
+	</TD>
+</TR><TR>
+	<TD ALIGN="LEFT" BGCOLOR="#99CCFF" COLSPAN="3">
+		<SPAN CLASS="text">
+		...or enter ingredients here, one per line with the following format:
+		<B>ingredient*qty*unit abbreviation</B>.
+		<BR>
+		To delete an ingredient, select its line and hit the Delete key on your keyboard.
+		</SPAN>
+	</TD>
+</TR><TR>
+	<TD ALIGN="LEFT" BGCOLOR="#CCCCCC" COLSPAN="3">
+		<SPAN CLASS="text">
+		<TEXTAREA NAME="ingredients" COLS="40" ROWS="8" NOWRAP>REP_INGREDIENTS</TEXTAREA>
+		</SPAN>
+	</TD>
+</TR>
+</TABLE>
+
+<BR>
+
+<TABLE BORDER="0" CELLSPACING="0" CELLPADDING="3" WIDTH="100%">
+<TR>
+	<TD ALIGN="LEFT" BGCOLOR="#CCFF99">
+		<SPAN CLASS="section-head">Instructions</SPAN>
+	</TD>
+</TR><TR>
+	<TD ALIGN="LEFT" BGCOLOR="#99CCFF">
+		<SPAN CLASS="text">
+		Enter instructions, one step per line
+		</SPAN>
+	</TD>
+</TR><TR>
+	<TD ALIGN="LEFT" BGCOLOR="#CCCCCC">
+		<SPAN CLASS="text">
+		<TEXTAREA NAME="instructions" COLS="40" ROWS="8" NOWRAP>REP_INSTRUCTIONS</TEXTAREA>
+		</SPAN>
+	</TD>
+</TR>
+</TABLE>
+
+<BR>
+
+<TABLE BORDER="0" CELLSPACING="0" CELLPADDING="3" WIDTH="100%">
+<TR>
+	<TD ALIGN="LEFT" BGCOLOR="#CCFF99" COLSPAN="2">
+		<SPAN CLASS="section-head">Yield</SPAN>
+	</TD>
+</TR><TR>
+	<TD ALIGN="LEFT" BGCOLOR="#99CCFF">
+		<SPAN CLASS="text">Qty.</SPAN>
+	</TD>
+	<TD ALIGN="LEFT" BGCOLOR="#99CCFF">
+		<SPAN CLASS="text">Units</SPAN>
+	</TD>
+</TR><TR>
+	<TD ALIGN="LEFT" BGCOLOR="#CCCCCC">
+		<SPAN CLASS="text">
+		<INPUT TYPE="text" NAME="yield_qty" VALUE="REP_YIELD_QTY" SIZE="3">
+		</SPAN>
+	</TD>
+	<TD ALIGN="LEFT" BGCOLOR="#CCCCCC">
+		<SPAN CLASS="text">
+		<INPUT TYPE="text" NAME="yield_units" VALUE="REP_YIELD_UNITS" SIZE="25">
+		</SPAN>
+	</TD>
+</TR>
+</TABLE>
+
+<BR>
+
+<TABLE BORDER="0" CELLSPACING="0" CELLPADDING="3" WIDTH="100%">
+<TR>
+	<TD ALIGN="LEFT" BGCOLOR="#CCFF99">
+		<SPAN CLASS="section-head">Source</SPAN>
+	</TD>
+</TR><TR>
+	<TD ALIGN="LEFT" BGCOLOR="#CCCCCC">
+		<SPAN CLASS="text">
+		<INPUT TYPE="text" NAME="source" VALUE="REP_SOURCE" SIZE="35">
+		</SPAN>
+	</TD>
+</TR>
+</TABLE>
+
+<BR>
+
+<TABLE BORDER="0" CELLSPACING="0" CELLPADDING="3" WIDTH="100%">
+<TR>
+	<TD ALIGN="LEFT" BGCOLOR="#CCFF99">
+		<SPAN CLASS="section-head">Categories</SPAN>
+	</TD>
+</TR><TR>
+	<TD ALIGN="LEFT" BGCOLOR="#CCCCCC">
+		<SPAN CLASS="text">
+REP_CATEGORY_TREE
+		</SPAN>
+	</TD>
+</TR>
+</TABLE>
+
+<BR>
+
+<CENTER>
+<INPUT TYPE="submit" VALUE="Save" CLASS="button"> 
+<INPUT TYPE="button" VALUE="Cancel" CLASS="button" onClick="history.go(-1);">
+</CENTER>
+
+</FORM>

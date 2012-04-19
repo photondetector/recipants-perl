@@ -1,0 +1,140 @@
+REP_MESSAGE
+
+<TABLE BORDER="0" CELLSPACING="0" CELLPADDING="3" WIDTH="100%">
+<FORM ACTION="category_editor.cgi" METHOD="POST">
+<INPUT TYPE="hidden" NAME="cmd" VALUE="save_new">
+<TR>
+	<TD COLSPAN="2" ALIGN="LEFT" BGCOLOR="#CCFF99">
+		<SPAN CLASS="section-head"><B>Add New Category</B></SPAN>
+	</TD>
+</TR><TR BGCOLOR="#CCCCCC">
+	<TD ALIGN="LEFT">
+		<SPAN CLASS="text">New category name:</SPAN>
+	</TD>
+	<TD ALIGN="LEFT">
+		<SPAN CLASS="text">
+		<INPUT TYPE="text" NAME="name" SIZE="25">
+		</SPAN>
+	</TD>
+</TR><TR BGCOLOR="#CCCCCC">
+	<TD ALIGN="LEFT">
+		<SPAN CLASS="text">As a subcategory of:</SPAN>
+	</TD>
+	<TD ALIGN="LEFT">
+		<SPAN CLASS="text">
+REP_TREE_PARENT
+		</SPAN>
+	</TD>
+</TR><TR BGCOLOR="#CCCCCC">
+	<TD ALIGN="CENTER" COLSPAN="2" BGCOLOR="#99CCFF">
+		<SPAN CLASS="text">
+		<INPUT TYPE="submit" VALUE="Add" CLASS="button">
+		</SPAN>
+	</TD>
+</FORM>
+</TABLE>
+
+<BR>
+
+<TABLE BORDER="0" CELLSPACING="0" CELLPADDING="3" WIDTH="100%">
+<FORM ACTION="category_editor.cgi" METHOD="POST">
+<INPUT TYPE="hidden" NAME="cmd" VALUE="rename">
+<TR>
+	<TD COLSPAN="2" ALIGN="LEFT" BGCOLOR="#CCFF99">
+		<SPAN CLASS="section-head"><B>Rename Category</B></SPAN>
+	</TD>
+</TR><TR BGCOLOR="#CCCCCC">
+	<TD ALIGN="LEFT">
+		<SPAN CLASS="text">Category to rename:</SPAN>
+	</TD>
+	<TD ALIGN="LEFT">
+		<SPAN CLASS="text">
+REP_TREE_NO_TOP_CATEGORY_ID
+		</SPAN>
+	</TD>
+</TR><TR BGCOLOR="#CCCCCC">
+	<TD ALIGN="LEFT">
+		<SPAN CLASS="text">New name:</SPAN>
+	</TD>
+	<TD ALIGN="LEFT">
+		<SPAN CLASS="text">
+		<INPUT TYPE="text" NAME="name" SIZE="25">
+		</SPAN>
+	</TD>
+<TR BGCOLOR="#CCCCCC">
+	<TD ALIGN="CENTER" COLSPAN="2" BGCOLOR="#99CCFF">
+		<SPAN CLASS="text">
+		<INPUT TYPE="submit" VALUE="Rename" CLASS="button">
+		</SPAN>
+	</TD>
+</TR>
+</FORM>
+</TABLE>
+
+<BR>
+
+<TABLE BORDER="0" CELLSPACING="0" CELLPADDING="3" WIDTH="100%">
+<FORM ACTION="category_editor.cgi" METHOD="POST">
+<INPUT TYPE="hidden" NAME="cmd" VALUE="move">
+<TR>
+	<TD COLSPAN="2" ALIGN="LEFT" BGCOLOR="#CCFF99">
+		<SPAN CLASS="section-head"><B>Move Category</B></SPAN>
+	</TD>
+</TR><TR BGCOLOR="#CCCCCC">
+	<TD ALIGN="LEFT">
+		<SPAN CLASS="text">Make this category:</SPAN>
+	</TD>
+	<TD ALIGN="LEFT">
+		<SPAN CLASS="text">a subcategory of:</SPAN>
+	</TD>
+</TR><TR BGCOLOR="#CCCCCC">
+	<TD ALIGN="LEFT">
+		<SPAN CLASS="text">
+REP_TREE_NO_TOP_CATEGORY_ID
+		</SPAN>
+	</TD>
+	<TD ALIGN="LEFT">
+		<SPAN CLASS="text">
+REP_TREE_PARENT
+		</SPAN>
+	</TD>
+<TR BGCOLOR="#CCCCCC">
+	<TD ALIGN="CENTER" COLSPAN="2" BGCOLOR="#99CCFF">
+		<SPAN CLASS="text">
+		<INPUT TYPE="submit" VALUE="Move" CLASS="button">
+		</SPAN>
+	</TD>
+</TR>
+</FORM>
+</TABLE>
+
+<BR>
+
+<TABLE BORDER="0" CELLSPACING="0" CELLPADDING="3" WIDTH="100%">
+<FORM ACTION="category_editor.cgi" METHOD="POST">
+<INPUT TYPE="hidden" NAME="cmd" VALUE="delete">
+<TR>
+	<TD COLSPAN="2" ALIGN="LEFT" BGCOLOR="#CCFF99">
+		<SPAN CLASS="section-head"><B>Delete Category</B></SPAN>
+	</TD>
+</TR><TR BGCOLOR="#CCCCCC">
+	<TD ALIGN="LEFT">
+		<SPAN CLASS="text">Delete this category:</SPAN>
+	</TD>
+	<TD ALIGN="LEFT">
+		<SPAN CLASS="text">
+REP_TREE_NO_TOP_CATEGORY_ID
+		</SPAN>
+	</TD>
+</TR><TR BGCOLOR="#CCCCCC">
+	<TD ALIGN="CENTER" COLSPAN="2" BGCOLOR="#99CCFF">
+		<SPAN CLASS="text">
+		<INPUT TYPE="submit" VALUE="Delete" CLASS="button">
+		</SPAN>
+	</TD>
+</FORM>
+</TABLE>
+
+<BR>
+
+</CENTER>

@@ -1,0 +1,128 @@
+<TABLE BORDER="0" CELLSPACING="0" CELLPADDING="3" WIDTH="100%">
+<TR>
+	<TD BGCOLOR="#CCFF99">
+		<SPAN CLASS="section-head">Categories</SPAN>
+	</TD>
+</TR><TR>
+	<TD BGCOLOR="#CCCCCC">
+		<SPAN CLASS="text">
+REP_CATEGORIES
+		</SPAN>
+	</TD>
+</TR>
+</TABLE>
+
+<BR>
+
+<TABLE BORDER="0" CELLSPACING="0" CELLPADDING="3" WIDTH="100%">
+<TR>
+	<TD COLSPAN=3 BGCOLOR="#CCFF99">
+		<SPAN CLASS="section-head">Ingredients</SPAN>
+	</TD>
+</TR><TR BGCOLOR="#FFFFFF">
+	<TD><FONT FACE="Arial,Helvetica,sans-serif" SIZE="-1"><B>Ingredient</B></SPAN></TD>
+	<TD ALIGN="RIGHT"><FONT FACE="Arial,Helvetica,sans-serif" SIZE="-1"><B>Qty.</B></SPAN></TD>
+	<TD ALIGN="LEFT"><FONT FACE="Arial,Helvetica,sans-serif" SIZE="-1"><B>Unit</B></SPAN></TD>
+</TR>
+REP_INGREDIENTS
+</TABLE>
+
+<BR>
+
+<TABLE BORDER="0" CELLSPACING="0" CELLPADDING="3" WIDTH="100%">
+<TR>
+	<TD BGCOLOR="#CCFF99">
+		<SPAN CLASS="section-head">Instructions</SPAN>
+	</TD>
+</TR><TR>
+	<TD BGCOLOR="#CCCCCC">
+		<SPAN CLASS="text">
+REP_INSTRUCTIONS
+		</SPAN>
+	</TD>
+</TR>
+</TABLE>
+
+<BR>
+
+<TABLE BORDER="0" CELLSPACING="0" CELLPADDING="3" WIDTH="100%">
+<TR>
+	<TD BGCOLOR="#CCFF99">
+		<SPAN CLASS="section-head">Yield</SPAN>
+	</TD>
+</TR><TR>
+	<TD BGCOLOR="#CCCCCC">
+		<SPAN CLASS="text">
+		REP_YIELD_QTY REP_YIELD_UNITS
+		</SPAN>
+	</TD>
+</TR>
+</TABLE>
+
+<BR>
+
+<TABLE BORDER="0" CELLSPACING="0" CELLPADDING="3" WIDTH="100%">
+<TR>
+	<TD BGCOLOR="#CCFF99">
+		<SPAN CLASS="section-head">Source</SPAN>
+	</TD>
+</TR><TR>
+	<TD BGCOLOR="#CCCCCC">
+		<SPAN CLASS="text">
+		REP_SOURCE
+		</SPAN>
+	</TD>
+</TR>
+</TABLE>
+
+<BR>
+
+<TABLE BORDER="0" CELLSPACING="0" CELLPADDING="3" WIDTH="100%">
+<TR>
+	<TD BGCOLOR="#CCCCCC">
+		<SPAN CLASS="text">
+		Recipe submitted by <A HREF="user.cgi?cmd=profile&user_id=REP_SUBMITTER_USER_ID">REP_SUBMITTER_NAME</A>
+		</SPAN>
+	</TD>
+</TR>
+</TABLE>
+
+<BR>
+
+<TABLE BORDER="0" CELLSPACING="0" CELLPADDING="3" WIDTH="100%" BGCOLOR="#99CCFF">
+<TR>
+	<TD ALIGN="CENTER">
+		<SPAN CLASS="text">
+		<B>Export</B> this recipe to:
+		</SPAN>
+	</TD>
+</TR><TR>
+	<TD ALIGN="CENTER" BGCOLOR="#FFFFFF">
+		<SPAN CLASS="text">
+		<A HREF="recipe.cgi?recipe_id=REP_RECIPE_ID&format=xml&scale_factor=REP_SCALE_FACTOR" TARGET="_blank">XML (RecipeML)</A>
+		&middot;
+		<A HREF="recipe.cgi?recipe_id=REP_RECIPE_ID&format=mealmaster&scale_factor=REP_SCALE_FACTOR"
+			onClick="javascript:alert('NOTE:\n\nMeal-Master allows a maximum of 5 categories per recipe. If this recipe is in more than 5 categories, only the first 5 will be included in your Meal-Master file (which will open in a new window).');"
+			TARGET="_blank">Meal-Master</A>
+		</SPAN>
+	</TD>
+</TR>
+</TABLE>
+
+<BR>
+
+<TABLE BORDER="0" CELLSPACING="0" CELLPADDING="3" WIDTH="100%" BGCOLOR="#99CCFF">
+<TR>
+	<FORM ACTION="recipe.cgi" NAME="scale_form">
+	<TD COLSPAN=3 ALIGN="CENTER">
+		<SPAN CLASS="text">
+		<INPUT TYPE="hidden" NAME="recipe_id" VALUE="REP_RECIPE_ID">
+		<B>Scale</B> this recipe by <INPUT NAME="scale_factor" TYPE="text" SIZE=2 MAXLEN=2>
+		<INPUT TYPE="submit" VALUE="Scale">
+		</SPAN>
+	</TD>
+</TR>
+	</FORM>
+</TABLE>
+
+REP_RECIPE_ADMIN_MENU

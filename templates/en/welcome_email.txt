@@ -1,0 +1,30 @@
+Welcome to ReciPants at REP_APP_HOST_URL !
+
+To sign in and activate your account, please click this link or copy and
+paste it into your Web browser:
+
+REP_INSTALLED_URLuser.cgi?cmd=show_login
+
+
+Your Username is REP_USER_NAME
+
+Your Password is REP_PASSWORD
+
+
+You can change your password by clicking "Change My Password" once
+you've signed in.
+
+Happy Cooking!
+- REP_APP_HOST_TITLE
+
+
+-----------------------------------------------------------------------
+You are receiving this email because someone registered a ReciPants
+account using this email address at REP_APP_HOST_TITLE 
+( REP_APP_HOST_URL ).
+
+We apologize if this email has reached you in error.
+
+
+ReciPants vREP_APP_VERSION ( REP_APP_URL )
+ReciPants is Free Software.

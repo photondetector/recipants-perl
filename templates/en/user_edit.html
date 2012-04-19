@@ -1,0 +1,122 @@
+
+<FORM ACTION="user_editor.cgi" METHOD="POST" NAME="user_edit_form">
+<INPUT TYPE="hidden" NAME="cmd" VALUE="save">
+<INPUT TYPE="hidden" NAME="user_id" VALUE="REP_USER_ID">
+
+<TABLE BORDER="0" CELLSPACING="1" CELLPADDING="3" WIDTH="100%">
+<TR>
+	<TD COLSPAN="2" BGCOLOR="#CCFF99">
+		<SPAN CLASS="section-head">User Info</SPAN>
+	</TD>
+</TR><TR BGCOLOR="#CCCCCC">
+	<TD ALIGN="LEFT">
+		<SPAN CLASS="text">Username</SPAN>
+	</TD>
+	<TD ALIGN="LEFT">
+		<SPAN CLASS="text">
+		<INPUT TYPE="text" NAME="user_name" VALUE="REP_USER_NAME" SIZE="30">
+		</SPAN>
+	</TD>
+</TR><TR BGCOLOR="#CCCCCC">
+	<TD ALIGN="LEFT">
+		<SPAN CLASS="text">Password</SPAN>
+	</TD>
+	<TD ALIGN="LEFT">
+		<SPAN CLASS="text">
+		<INPUT TYPE="text" NAME="password" VALUE="REP_PASSWORD" SIZE="30">
+		</SPAN>
+	</TD>
+</TR><TR BGCOLOR="#CCCCCC">
+	<TD ALIGN="LEFT">
+		<SPAN CLASS="text">Email address</SPAN>
+	</TD>
+	<TD ALIGN="LEFT">
+		<SPAN CLASS="text">
+		<INPUT TYPE="text" NAME="email" VALUE="REP_EMAIL" SIZE="30">
+		</SPAN>
+	</TD>
+</TR><TR BGCOLOR="#CCCCCC">
+	<TD ALIGN="LEFT">
+		<SPAN CLASS="text">&nbsp;</SPAN>
+	</TD>
+	<TD ALIGN="LEFT">
+		<SPAN CLASS="text">
+		<INPUT TYPE="checkbox" NAME="email_private" REP_PRIVATE_EMAIL> Hide email address
+		</SPAN>
+	</TD>
+</TR><TR BGCOLOR="#CCCCCC">
+	<TD ALIGN="LEFT">
+		<SPAN CLASS="text">URL</SPAN>
+	</TD>
+	<TD ALIGN="LEFT">
+		<SPAN CLASS="text">
+		<INPUT TYPE="text" NAME="url" VALUE="REP_URL" SIZE="30">
+		</SPAN>
+	</TD>
+</TR><TR BGCOLOR="#CCCCCC">
+	<TD ALIGN="LEFT">
+		<SPAN CLASS="text">Signed up on</SPAN>
+	</TD>
+	<TD ALIGN="LEFT">
+		<SPAN CLASS="text">REP_CREATE_DATE</SPAN>
+	</TD>
+</TR><TR BGCOLOR="#CCCCCC">
+	<TD ALIGN="LEFT">
+		<SPAN CLASS="text">&nbsp;</SPAN>
+	</TD>
+	<TD ALIGN="LEFT">
+		<SPAN CLASS="text">
+		<INPUT TYPE="checkbox" NAME="account_active" REP_ACCOUNT_ACTIVE> Account is active
+		</SPAN>
+	</TD>
+</TR>
+</TABLE>
+
+<BR>
+
+<TABLE BORDER="0" CELLSPACING="0" CELLPADDING="3" WIDTH="100%">
+<TR>
+	<TD BGCOLOR="#CCFF99">
+		<SPAN CLASS="section-head">Permissions</SPAN>
+	</TD>
+</TR><TR BGCOLOR="#CCCCCC">
+	<TD ALIGN="LEFT">
+		<SPAN CLASS="text">
+		<INPUT TYPE="checkbox" NAME="permissions" VALUE="2"> Edit Any Recipe<BR>
+		<INPUT TYPE="checkbox" NAME="permissions" VALUE="1"> Delete Any Recipe<BR>
+		<INPUT TYPE="checkbox" NAME="permissions" VALUE="3"> Edit Categories<BR>
+		<INPUT TYPE="checkbox" NAME="permissions" VALUE="0"> All Access
+		</SPAN>
+	</TD>
+</TR>
+</TABLE>
+
+<BR>
+
+<CENTER>
+<SPAN CLASS="text">
+<INPUT TYPE="submit" VALUE="Save Changes">
+</SPAN>
+
+</FORM>
+
+<TABLE BORDER="0" CELLSPACING="15" CELLPADDING="5">
+<TR>
+	<TD ALIGN="CENTER" WIDTH="50%" BGCOLOR="#99CCFF">
+		<SPAN CLASS="text">
+		<A HREF="mailto:REP_EMAIL">Email User</A>
+		</SPAN>
+	</TD>
+	<TD ALIGN="CENTER" WIDTH="50%" BGCOLOR="#99CCFF">
+		<SPAN CLASS="text">
+		<A HREF="user.cgi?cmd=profile&user_id=REP_USER_ID" TARGET="_blank">View Profile</A>
+		</SPAN>
+	</TD>
+</TR>
+</TABLE>
+
+<BR>
+
+REP_LOGIN_HISTORY
+
+</CENTER>

@@ -1,0 +1,49 @@
+<CENTER>
+
+<FORM ACTION="user.cgi" METHOD="POST" NAME="sign_in_form">
+<INPUT TYPE="hidden" NAME="cmd" VALUE="login">
+
+<TABLE BORDER="0" CELLPADDING="7" CELLSPACING="0" BGCOLOR="#CCCCCC">
+<TR>
+	<TD><SPAN CLASS="text">Username</SPAN></TD>
+	<TD>
+		<SPAN CLASS="text">
+		<INPUT TYPE="text" NAME="user_name" SIZE="15" MAXLENGTH="30">
+		</SPAN>
+	</TD>
+</TR><TR>
+	<TD><SPAN CLASS="text">Password</SPAN></TD>
+	<TD>
+		<SPAN CLASS="text">
+		<INPUT TYPE="password" NAME="password" SIZE="15" MAXLENGTH="30">
+		</SPAN>
+	</TD>
+</TR><TR>
+	<TD COLSPAN="2" ALIGN="CENTER">
+		<SPAN CLASS="text">
+		<INPUT TYPE="submit" VALUE="Sign In">
+		</SPAN>
+	</TD>
+</TR>
+</TABLE>
+
+<BR>
+
+<TABLE BORDER="0" CELLPADDING="7" CELLSPACING="0" BGCOLOR="#99CCFF">
+<TR>
+	<TD ALIGN="CENTER">
+		<SPAN CLASS="text">
+		<B>You must have cookies enabled in your browser in order to sign in.</B>
+		<BR><BR>
+		If you don't already have an account here, you can
+		<A HREF="user.cgi?cmd=show_new">sign up for one by clicking here!</A>
+		<BR><BR>
+		Forget your password? <A HREF="user.cgi?cmd=show_send_passwd">Click here.</A>
+		</SPAN>
+	</TD>
+</TR>
+</TABLE>
+		
+</FORM>
+
+</CENTER>

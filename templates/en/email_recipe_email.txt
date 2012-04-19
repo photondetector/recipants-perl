@@ -1,0 +1,23 @@
+REP_FROM_EMAIL sent you a recipe for 
+REP_RECIPE_NAME from REP_APP_HOST_TITLE!
+
+Message from REP_FROM_EMAIL:
+----------
+REP_MESSAGE
+----------
+
+To view the recipe, click this link or copy and paste it into your
+Web browser:
+
+REP_INSTALLED_URLrecipe.cgi?recipe_id=REP_RECIPE_ID
+
+
+REP_APP_HOST_TITLE ( REP_APP_HOST_URL )
+
+-----------------------------------------------------------------------
+You are receiving this email because REP_FROM_EMAIL sent it
+to you. We apologize if it has reached you in error.
+
+
+ReciPants vREP_APP_VERSION ( REP_APP_URL )
+ReciPants is Free Software.

@@ -1,0 +1,45 @@
+<TABLE BORDER="0" CELLPADDING="3" CELLSPACING="0" WIDTH="100%">
+<TR>
+	<TD COLSPAN="3" BGCOLOR="#CCFF99">
+		<SPAN CLASS="section-head">Search for Users</SPAN>
+	</TD>
+</TR><TR BGCOLOR="#CCCCCC">
+
+<FORM ACTION="user_editor.cgi" METHOD="GET" NAME="user_search_form_user_name">
+<INPUT TYPE="hidden" NAME="cmd" VALUE="search_by_user_name">
+
+	<TD><SPAN CLASS="text">Search by Username</SPAN></TD>
+	<TD>
+		<SPAN CLASS="text">
+		<INPUT TYPE="text" NAME="user_name" VALUE="REP_USER_NAME" SIZE="15" MAXLENGTH="30">
+		</SPAN>
+	</TD>
+	<TD ALIGN="RIGHT">
+		<SPAN CLASS="text">
+		<INPUT TYPE="submit" VALUE="Search">
+		</SPAN>
+	</TD>
+
+</FORM>
+
+</TR><TR BGCOLOR="#CCCCCC">
+
+<FORM ACTION="user_editor.cgi" METHOD="GET" NAME="user_search_form_email">
+<INPUT TYPE="hidden" NAME="cmd" VALUE="search_by_email">
+
+	<TD><SPAN CLASS="text">Search by Email</SPAN></TD>
+	<TD>
+		<SPAN CLASS="text">
+		<INPUT TYPE="text" NAME="email" VALUE="REP_EMAIL" SIZE="15" MAXLENGTH="30">
+		</SPAN>
+	</TD>
+	<TD ALIGN="RIGHT">
+		<SPAN CLASS="text">
+		<INPUT TYPE="submit" VALUE="Search">
+		</SPAN>
+	</TD>
+
+</FORM>
+
+</TR>
+</TABLE>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE recipeml PUBLIC "-//FormatData//DTD RecipeML 0.5//EN"
+	"http://www.formatdata.com/recipeml/recipeml.dtd">
+<?xml-stylesheet href="REP_INSTALLED_URLstatic/css/recipeml.css" type="text/css"?>
+<recipeml version="0.5" generator="REP_APP_NAME vREP_APP_VERSION">
+	<recipe>
+		<head>
+			<title>REP_NAME</title>
+		</head>
+		<ingredients>
+REP_INGREDIENTS
+		</ingredients>
+		<directions>
+REP_INSTRUCTIONS
+		</directions>
+		<yield>
+			<qty>REP_YIELD_QTY</qty>
+			<unit>REP_YIELD_UNITS</unit>
+		</yield>
+		<source>REP_SOURCE</source>
+	</recipe>
+</recipeml>
