@@ -2,7 +2,7 @@
 -- Description:	DDL for ReciPants schema, Postgres version
 -- Author:		Nick Grossman <nick@photondetector.com>
 -- Tab stops:	4
--- Version:		1.0.1
+-- Version:		1.1
 
 
 ------------

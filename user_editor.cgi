@@ -4,13 +4,12 @@
 # File      : user_editor.cgi
 # Purpose   : User admin stuff.
 # Program   : ReciPants ( http://recipants.photondetector.com/ )
-# Version   : 1.0.1
+# Version   : 1.1
 # Author    : Nick Grossman <nick@photondetector.com>
 # Tab stops : 4
 #
-# Copyright (c) 2002, 2003
-#     Nicolai Grossman <nick@photondetector.com>
-#     Benjamin Mehlman <ben_recipe@cownow.com>
+# Copyright (c) 2002, 2003 Nicolai Grossman <nick@photondetector.com> and 
+# contributors ( see http://recipants.photondetector.com/credits.html )
 #
 # This file is part of ReciPants.
 #
@@ -91,7 +90,7 @@ sub UserSearchScreen() {
 
 	$output =~ s/REP_USER_NAME/$l_user_name/g;
 	$output =~ s/REP_EMAIL/$email/g;
-	&ShowPage("User Editor: Search", $output . $results);
+	&ShowPage($ls_user_editor_search_title{$language}, $output . $results);
 }
 
 
@@ -108,12 +107,14 @@ sub SearchForUsers() {
 	# How are we searching? Check for the right args and do the right query.
 	if($cmd eq "search_by_user_name") {
 		# Check for arg
-		$l_user_name = &DBEscapeString(lc(trim(param('user_name'))));
+		$l_user_name = &DBEscapeString(lc(&trim(param('user_name'))));
 		unless($l_user_name) {
 			&UserSearchScreen("", "", "", $ls_no_search_term{$language});
 			return(0);
 		}
 
+		# * -> % wildcard sub
+		$l_user_name =~ s/\*/%/g;
 		$search_term = $l_user_name;
 
 		$sth = &ExecSQL(
@@ -124,12 +125,14 @@ sub SearchForUsers() {
 			);
 	} else {	# Search by email address
 		# Check for arg
-		$email = &DBEscapeString(lc(trim(param('email'))));
+		$email = &DBEscapeString(lc(&trim(param('email'))));
 		unless($email) {
 			&UserSearchScreen("", "", "", $ls_no_search_term{$language});
 			return(0);
 		}
 
+		# * -> % wildcard sub
+		$email       =~ s/\*/%/g;
 		$search_term = $email;
 
 		$sth = &ExecSQL(
@@ -156,6 +159,11 @@ sub SearchForUsers() {
 	} else {
 		$user_list = $ls_no_matching_users{$language};
 	}
+
+	# Translate % wildcards back to *
+	$search_term =~ s/%/\*/g;
+	$l_user_name =~ s/%/\*/g;
+	$email       =~ s/%/\*/g;
 
 	# Fill out template and hand it off to UserSearchScreen()
 	$output = &GetTemplate("user_admin_user_search_results.html");

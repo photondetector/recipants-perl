@@ -2,14 +2,12 @@
 # File      : localized_strings.pl
 # Purpose   : Localized strings for programatically-generated messages.
 # Program   : ReciPants ( http://recipants.photondetector.com/ )
-# Version   : 1.0.1
+# Version   : 1.1
 # Author    : Nick Grossman <nick@photondetector.com>
 # Tab stops : 4
 #
-# Copyright (c) 2002, 2003
-#     Nicolai Grossman <nick@photondetector.com>
-#     Benjamin Mehlman <ben-recipe@cownow.com>
-#     Marc Hartstein   <mahartstein@vassar.edu>
+# Copyright (c) 2002, 2003 Nicolai Grossman <nick@photondetector.com> and 
+# contributors ( see http://recipants.photondetector.com/credits.html )
 #
 # This file is part of ReciPants.
 #
@@ -225,6 +223,15 @@
 	da => 'Oops!',
 );
 
+%ls_no_email_method_defined = (
+	en => 'Email configuration error: No sending method defined.',
+	da => 'Email configuration error: No sending method defined.',
+);
+
+%ls_cant_open_pipe_to = (
+	en => 'Can\'t open pipe to',
+	da => 'Can\'t open pipe to',
+);
 
 ##### recipe.cgi
 
@@ -654,6 +661,11 @@
 
 ##### user_editor.cgi
 
+%ls_user_editor_search_title = (
+	en => 'User Editor: Search',
+	da => 'User Editor: Search',
+);
+
 %ls_word_yes = (
 	en => 'Yes',
 	da => 'Ja',
@@ -695,6 +707,14 @@
 %ls_system_stats_title = (
 	en => 'System Information',
 	da => 'Systeminformation',
+);
+
+
+##### cart.cgi
+
+%ls_no_valid_destination = (
+	en => 'I don\'t know where to put this!',
+	da => 'I don\'t know where to put this!',
 );
 
 

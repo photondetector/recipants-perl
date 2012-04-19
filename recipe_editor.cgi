@@ -4,14 +4,12 @@
 # File      : recipe_editor.cgi
 # Program   : ReciPants ( http://recipants.photondetector.com/ )
 # Purpose	: Handles recipe creation and editing.
-# Version   : 1.0.1
+# Version   : 1.1
 # Author    : Nick Grossman <nick@photondetector.com>
 # Tab stops : 4
 #
-# Copyright (c) 2002, 2003
-#     Nicolai Grossman <nick@photondetector.com>
-#     Benjamin Mehlman <ben-recipe@cownow.com>
-#     Marc Hartstein   <mahartstein@vassar.edu>
+# Copyright (c) 2002, 2003 Nicolai Grossman <nick@photondetector.com> and 
+# contributors ( see http://recipants.photondetector.com/credits.html )
 #
 # This file is part of ReciPants.
 #
@@ -177,6 +175,9 @@ sub EditRecipeScreenError() {
 	my($error_box, $page_title, $name, $ingredients, $instructions,
 		$yield_qty, $yield_units, $source, @categories, $categories_formatted);
 
+	# Roll back transaction
+#	$dbh->rollback();
+
 	# Yeah, yeah... RTFM for CGI.pm and figure out how to get a hash
 	$name         = param('name');
 	$ingredients  = param('ingredients');
@@ -294,9 +295,11 @@ sub SaveRecipe() {
 			" <B>$missing_fields_formatted.");
 	}
 
+	&VerifyRecipeIngredientsFormat($ingredients);
+
 	# Turn off auto-commit. This way if anything fails we can bail and
 	# any changes we've made will be undone (so we don't get half a recipe).
-	$dbh->{AutoCommit} = 0;
+	$dbh->{'AutoCommit'} = 0;
 	if($dbh->{'AutoCommit'}) {
 		&PrintErrorExit($ls_set_autocommit_off_failed{$language});
 	}
@@ -310,8 +313,8 @@ sub SaveRecipe() {
 		$l_recipe_id = &InsertRecipeBaseInfo($name, $yield_qty, $yield_units, $source, $user_id);
 	}
 
-	&InsertRecipeInstructionsFormatted($l_recipe_id, $instructions);
 	&InsertRecipeIngredientsFormatted($l_recipe_id, $ingredients);
+	&InsertRecipeInstructionsFormatted($l_recipe_id, $instructions);
 
 	# Categories are optional
 	if($#categories >= 0) {
@@ -407,13 +410,32 @@ sub InsertRecipeBaseInfo() {
 }
 
 
+
+
+#####################################################################
+# VerifyRecipeIngredientsFormat($ingredients_formatted)
+#
+# Takes a lump of ingredients and verifies the format 
+# ("name*qty*unit_abbr", one per line)
+#####################################################################
+sub VerifyRecipeIngredientsFormat() {
+	my($ingredients_formatted) = @_;
+
+	foreach $this_ingredient_line (split(/\n/, $ingredients_formatted)) {	# split lump into lines
+		# Veryify format
+		unless($this_ingredient_line =~ /\w+\*(\d+|\d*\.\d+|\d+\s\d+\/\d+|\d+\/\d+)\*\w+/) {
+			&EditRecipeScreenError($ls_bad_ingredient_format{$language});
+		}
+	}
+}
+
+
+
 #####################################################################
 # InsertRecipeIngredientsFormatted($recipe_id, $ingredients_formatted)
 #
 # Takes a lump of ingredients formatted "name*qty*unit_abbr", one per
 # line and inserts them for recipe recipe_id.
-#
-# Non-trivial regexes contributed by Magus - Thanks, Magus!
 #####################################################################
 sub InsertRecipeIngredientsFormatted() {
 	my($l_recipe_id, $ingredients_formatted) = @_;
@@ -429,11 +451,7 @@ sub InsertRecipeIngredientsFormatted() {
 
 	foreach $this_ingredient_line (split(/\n/, $ingredients_formatted)) {	# split lump into lines
 
-		# Veryify format
-		unless($this_ingredient_line =~ /\w+\*\d+[\/\.]*\d*\*\w+/) {
-			&EditRecipeScreenError($ls_bad_ingredient_format{$language});
-		}
-
+		# Note: format has already been verified byVerify RecipeIngredientsFormat()
 		($name, $qty, $unit_abbr) = split(/\*/, $this_ingredient_line);
 		chomp($name, $qty, $unit_abbr);
 
@@ -444,7 +462,7 @@ sub InsertRecipeIngredientsFormatted() {
 		# Convert unit abbreviation to unit_id; bail if not found
 		# This might read from the DB at some point, it just seems wasteful to do so
 		$unit_abbr = lc($unit_abbr);
-		$unit_id = $unit_map_abbr2id{$unit_abbr};
+		$unit_id   = $unit_map_abbr2id{$unit_abbr};
 
 		if($unit_id < 1 || $unit_id > 15) {
 			&EditRecipeScreenError(
@@ -463,7 +481,7 @@ sub InsertRecipeIngredientsFormatted() {
 
 #####################################################################
 # InsertRecipeIngredient($recipe_id, $ingredient_type, $display_order,
-#							$name, $qty, $unit_id)
+#						 $name, $qty, $unit_id)
 #
 # Adds an ingredient record for recipe recipe_id.
 #####################################################################
@@ -506,7 +524,7 @@ sub InsertRecipeInstructionsFormatted() {
 
 	# Fixed double-spaced lumps as a courtesy
 	$instructions_formatted =~ s/\r//g;		# Ditch \r's
-	$instructions_formatted =~ s/\n\n/\n/g;	# Two newlines to one - find regex to handle any number of \n's
+	$instructions_formatted =~ s/\n+/\n/g;	# Multiple newlines to one
 	chomp($instructions_formatted);
 
 	$step_num = 1;

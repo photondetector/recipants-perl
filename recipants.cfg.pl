@@ -2,14 +2,12 @@
 # File      : recipants.cfg.pl
 # Purpose   : Configuration and global reference variables.
 # Program   : ReciPants ( http://recipants.photondetector.com/ )
-# Version   : 1.0.1
+# Version   : 1.1
 # Author    : Nick Grossman <nick@photondetector.com>
 # Tab stops : 4
 #
-# Copyright (c) 2002, 2003
-#     Nicolai Grossman <nick@photondetector.com>
-#     Benjamin Mehlman <ben-recipe@cownow.com>
-#     Marc Hartstein   <mahartstein@vassar.edu>
+# Copyright (c) 2002, 2003 Nicolai Grossman <nick@photondetector.com> and 
+# contributors ( see http://recipants.photondetector.com/credits.html )
 #
 # This file is part of ReciPants.
 #
@@ -114,7 +112,17 @@
 
 ##### Email configuration
 
-# The location of your system's sendmail binary
+# You can either use an SMTP server or talk directly to sendmail.
+# If in doubt, use SMTP.
+
+# Which method to use?
+# Must be either $send_email_method_smtp or $send_email_method_sendmail
+	$send_email_method = $send_email_method_smtp;
+
+# The address of your SMTP server (only required if you use SMTP)
+	$smtp_server = "smtp.mydomain.org";
+
+# The location of your system's sendmail binary (only required if you use sendmail)
 	$sendmail = "/usr/sbin/sendmail";
 
 # The From: address of automated emails (welcome message, password reminder,
@@ -157,7 +165,7 @@
 ##### ReciPants application info
 
 $app_name    = "ReciPants";
-$app_version = "1.0.1";
+$app_version = "1.1";
 $app_url     = "http://recipants.photondetector.com/";
 
 

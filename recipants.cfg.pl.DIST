@@ -2,14 +2,12 @@
 # File      : recipants.cfg.pl.DIST
 # Purpose   : Backup configuration and global reference variables.
 # Program   : ReciPants ( http://recipants.pantsblazing.com/ )
-# Version   : 1.0.1
+# Version   : 1.1
 # Author    : Nick Grossman <nick@pantsblazing.com>
 # Tab stops : 4
 #
-# Copyright (c) 2002, 2003
-#     Nicolai Grossman <nick@pantsblazing.com>
-#     Benjamin Mehlman <ben-recipe@cownow.com>
-#     Marc Hartstein   <mahartstein@vassar.edu>
+# Copyright (c) 2002, 2003 Nicolai Grossman <nick@pantsblazing.com> and 
+# contributors ( see http://recipants.pantsblazing.com/credits.html )
 #
 # This file is part of ReciPants.
 #
@@ -119,6 +117,16 @@
 
 ##### Email configuration
 
+# You can either use an SMTP server or talk directly to sendmail.
+# If in doubt, use SMTP.
+
+# Which method to use?
+# Must be either $send_email_method_smtp or $send_email_method_sendmail
+	$send_email_method = $send_email_method_smtp;
+
+# The address of your SMTP server (only required if you use SMTP)
+	$smtp_server = "smtp.mydomain.org";
+
 # The location of your system's sendmail binary
 	$sendmail = "/usr/sbin/sendmail";
 
@@ -162,7 +170,7 @@
 ##### ReciPants application info
 
 $app_name    = "ReciPants";
-$app_version = "1.0";
+$app_version = "1.1";
 $app_url     = "http://recipants.pantsblazing.com/";
 
 

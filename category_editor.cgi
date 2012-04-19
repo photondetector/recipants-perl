@@ -4,14 +4,12 @@
 # File      : category_editor.cgi
 # Purpose   : Category editing routines.
 # Program   : ReciPants ( http://recipants.photondetector.com/ )
-# Version   : 1.0.1
+# Version   : 1.1
 # Author    : Nick Grossman <nick@photondetector.com>
 # Tab stops : 4
 #
-# Copyright (c) 2002, 2003
-#     Nicolai Grossman <nick@photondetector.com>
-#     Benjamin Mehlman <ben-recipe@cownow.com>
-#     Marc Hartstein   <mahartstein@vassar.edu>
+# Copyright (c) 2002, 2003 Nicolai Grossman <nick@photondetector.com> and 
+# contributors ( see http://recipants.photondetector.com/credits.html )
 #
 # This file is part of ReciPants.
 #

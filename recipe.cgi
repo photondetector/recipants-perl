@@ -4,14 +4,12 @@
 # File      : recipe.cgi
 # Purpose   : Handles display, scaling, and format conversion of recipes.
 # Program   : ReciPants ( http://recipants.photondetector.com/ )
-# Version   : 1.0.1
+# Version   : 1.1
 # Author    : Nick Grossman <nick@photondetector.com>
 # Tab stops : 4
 #
-# Copyright (c) 2002, 2003
-#     Nicolai Grossman <nick@photondetector.com>
-#     Benjamin Mehlman <ben-recipe@cownow.com>
-#     Marc Hartstein   <mahartstein@vassar.edu>
+# Copyright (c) 2002, 2003 Nicolai Grossman <nick@photondetector.com> and 
+# contributors ( see http://recipants.photondetector.com/credits.html )
 #
 # This file is part of ReciPants.
 #
@@ -96,6 +94,7 @@ sub RenderRecipeHTML() {
 
 	# Ingredients
 	$ingredient_template = &GetTemplate("ingredient.html");
+
 	for $i (0 .. $#ingredients) {
 		$this_ingredient = $ingredient_template;
 		$this_ingredient =~ s/REP_NAME/$ingredients[$i]->{'name'}/g;
@@ -235,7 +234,7 @@ sub RenderRecipeHTMLPrinterFriendly() {
 		$this_ingredient, $ingredients_output, $instructions_output, 
 		$recipe_name, $ctr, $decimal_scale_factor);
 
-	$base_info    = &GetRecipeBaseInfo($l_recipe_id);
+	$base_info = &GetRecipeBaseInfo($l_recipe_id);
 
 	# Do file name - do the export file business rather than print it
 	# directly to the browser so they get a meaningful file name rather

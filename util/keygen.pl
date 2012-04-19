@@ -4,16 +4,14 @@
 # File      : category.cgi
 # Purpose   : Generates a random string to be used as the secret host key.
 # Program   : ReciPants ( http://recipants.photondetector.com/ )
-# Version   : 1.0.1
+# Version   : 1.1
 # Authors   : Authors of Scoop ( http://scoop.kuro5hin.org/ )
 #             Nick Grossman <nick@photondetector.com>
 # Tab stops : 4
 #
-# Copyright (c) 2002, 2003
-#     Nicolai Grossman <nick@photondetector.com>
-#     Benjamin Mehlman <ben-recipe@cownow.com>
-#     Marc Hartstein   <mahartstein@vassar.edu>
-#     Authors of Scoop
+# Copyright (c) 2002, 2003 Nicolai Grossman <nick@photondetector.com> and 
+# contributors ( see http://recipants.photondetector.com/credits.html ) and
+# the authors of Scoop
 #
 # This file is part of ReciPants.
 #

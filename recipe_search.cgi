@@ -4,14 +4,12 @@
 # File      : recipe_search.cgi
 # Purpose	: Searches for recipes
 # Program   : ReciPants ( http://recipants.photondetector.com/ )
-# Version   : 1.0.1
+# Version   : 1.1
 # Author    : Nick Grossman <nick@photondetector.com>
 # Tab stops : 4
 #
-# Copyright (c) 2002, 2003
-#     Nicolai Grossman <nick@photondetector.com>
-#     Benjamin Mehlman <ben-recipe@cownow.com>
-#     Marc Hartstein   <mahartstein@vassar.edu>
+# Copyright (c) 2002, 2003 Nicolai Grossman <nick@photondetector.com> and 
+# contributors ( see http://recipants.photondetector.com/credits.html )
 #
 # This file is part of ReciPants.
 #
@@ -86,8 +84,12 @@ sub KeywordSearch() {
 
 	$output = &GetTemplate("search_results.html");
 
+	# Translate * -> % wildcards
+	$search_terms =~ s/\*/%/g;
+	# Translate multiple spaces to one
+	$search_terms =~ s/ +/ /g;
+
 	# Put each search term into a list
-	##### INSERT REGEX to translate >= 2 spaces to one space #####
 	@terms = split(" ", $search_terms);
 
 	# Search each area selected for search and turn on the appropriate form checkboxes

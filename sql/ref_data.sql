@@ -2,7 +2,7 @@
 -- Description:	Reference data for recipe manager lookup tables
 -- Author:		Nick Grossman <nick@photondetector.com>
 -- Tab stops:	4
--- Version:		1.0.1
+-- Version:		1.1
 
 
 -- Unit codes
@@ -20,6 +20,7 @@ INSERT INTO units (name, abbreviation) VALUES ('Grams', 		'g');
 INSERT INTO units (name, abbreviation) VALUES ('Kilograms', 	'kg');
 INSERT INTO units (name, abbreviation) VALUES ('Pinches', 		'pinches');
 INSERT INTO units (name, abbreviation) VALUES ('Each', 			'ea');
+INSERT INTO units (name, abbreviation) VALUES ('Pounds', 		'lb');
 
 
 -- Ingredient type codes
@@ -38,6 +39,8 @@ INSERT INTO user_permissions (permission_id, short_description, long_description
 
 -- Master category
 INSERT INTO categories (category_id, parent, name) VALUES ('0', '-1', 'All Categories');
+-- Fix category ID (may be set incorrectly when using auto-incrementing types)
+UPDATE categories SET category_id = 0 WHERE parent = -1;
 
 
 -- Administrator user account info

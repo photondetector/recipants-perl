@@ -2,14 +2,12 @@
 # File      : librecipants.pl
 # Purpose   : Library of functions and globals used in > 1 CGI.
 # Program   : ReciPants ( http://recipants.photondetector.com/ )
-# Version   : 1.0.1
+# Version   : 1.1
 # Author    : Nick Grossman <nick@photondetector.com>
 # Tab stops : 4
 #
-# Copyright (c) 2002, 2003
-#     Nicolai Grossman <nick@photondetector.com>
-#     Benjamin Mehlman <ben-recipe@cownow.com>
-#     Marc Hartstein   <mahartstein@vassar.edu>
+# Copyright (c) 2002, 2003 Nicolai Grossman <nick@photondetector.com> and 
+# contributors ( see http://recipants.photondetector.com/credits.html )
 #
 # This file is part of ReciPants.
 #
@@ -28,10 +26,20 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 ###########################################################################
 
+
+# Email config defines. These are up here because they need to be defined
+# before figuring out if we need to use Net::SMTP.
+$send_email_method_smtp     = 0;
+$send_email_method_sendmail = 1;
+
 use DBI;
 use CGI qw(:cgi);
 use Digest::SHA1 qw(sha1_base64);
 use MIME::Base64;
+# use Net::SMTP if necessary
+if($send_email_method == $send_email_method_smtp) {
+	use Net::SMTP;
+}
 
 require "localized_strings.pl";
 require "recipants.cfg.pl";
@@ -471,15 +479,11 @@ sub CookieEncodeSign() {
 #####################################################################
 sub CookieDecodeAuthenticate() {
 	my($val_string) = @_;
-	my($vals, $pair);
+	my($vals);
 
 	$val_string = decode_base64($val_string);
 
-	# Rebuild hash from key=val pairs
-	foreach $pair (split(/&/, $val_string)) {
-		($key, $val) = split(/=/, $pair);
-		$vals->{$key}  = $val;
-	}
+	$vals = &DecodeString2Hash($val_string);
 
 	# Verify sig - chop off "digest=<digest>", get hash, and compare
 	$val_string_no_digest = $val_string;
@@ -507,11 +511,31 @@ sub EncodeHash2String() {
 	my($string);
 
 	# Encode hash to string, CGI-style
-	foreach $key (sort(keys(%vals))) {
+	foreach $key (keys(%vals)) {
 		$string .= "$key=$vals{$key}&";
 	}
 
 	return($string);
+}
+
+
+#####################################################################
+# DecodeString2Hash($string)
+#
+# Decodes a string encoded with EncodeHash2String() back to a hash,
+# CGI-style (key=val&key=val&). Returns a hashref.
+#####################################################################
+sub DecodeString2Hash() {
+	my($string) = @_;
+	my($vals, $pair, $key, $val);
+
+	# Rebuild hash from key=val pairs
+	foreach $pair (split(/&/, $string)) {
+		($key, $val)  = split(/=/, $pair);
+		$vals->{$key} = $val;
+	}
+
+	return($vals);
 }
 
 
@@ -607,7 +631,7 @@ sub ExecSQL() {
 	# Execute statement
 	unless($statement_handle->execute()) {
 		&PrintErrorExit($cant_execute_sql{$language} . $dbh->errstr() . 
-			"<BR><BR>SQL: <B>$sql</B>");
+			"<BR><BR>SQL: <CODE><B>$sql</B></CODE>");
 	}
 
 	return($statement_handle);
@@ -800,17 +824,17 @@ sub GetRecipesEnteredByUserHTML() {
 # _____ SCALING AND CONVERSION ______________________________________
 
 #####################################################################
-# ScaleIngredient($qty, $unit, $scaleFactor)
+# ScaleIngredient($qty, $unit, $scale_factor)
 #
 # Scales a quantity by $scaleFactor. Units may be diferent on the
 # way out than on the way in, e.g. ScaleIngredient(1, "cup", 4) will
 # return $result{"qty"} = 1, $result{"unit"} = "quart".
 #####################################################################
 sub ScaleIngredient {
-	my($qty, $unit, $scaleFactor) = @_;
+	my($qty, $unit, $scale_factor) = @_;
 	my(%result);
 
-	$result{'qty'}  = $qty * $scaleFactor;
+	$result{'qty'}  = $qty * $scale_factor;
 	$result{'unit'} = $unit;
 
 	return(%result);
@@ -1355,27 +1379,71 @@ sub GetUnitSelectList() {
 
 
 #####################################################################
-# SendEmail()
+# SendEmail($from_name, $from_email, $to_name, $to_email, $subject, $message)
 #
-# Sends an email using sendmail.
-#
-# If you want to use an SMTP package instead, hack this function
-# to use it.
+# Email wrapper. Calls either SendEmailSendmail() or SendEmailSMTP()
+# depending on user preference.
 #####################################################################
 sub SendEmail() {
 	my($from_name, $from_email, $to_name, $to_email, $subject, $message) = @_;
 
+	if($send_email_method == $send_email_method_smtp) {
+		&SendEmailSMTP($from_name, $from_email, $to_name, $to_email, $subject, $message);
+	} elsif($send_email_method == $send_email_method_sendmail) {
+		&SendEmailSendmail($from_name, $from_email, $to_name, $to_email, $subject, $message);
+	} else {
+		&PrintErrorExit($ls_no_email_method_defined{$language});
+	}
+}
+
+
+#####################################################################
+# SendEmailSMTP($from_name, $from_email, $to_name, $to_email, $subject, $message)
+#
+# Sends an email using an SMTP server.
+#####################################################################
+sub SendEmailSMTP() {
+	my($from_name, $from_email, $to_name, $to_email, $subject, $message) = @_;
+	my($smtp);
+
+	$smtp = Net::SMTP->new($smtp_server);
+
+	$smtp->mail($from_email);
+	$smtp->to($to_email);
+	$smtp->data();
+	$smtp->datasend("To: $to_name \<$to_email\>\r\n");
+	$smtp->datasend("Subject: $subject\r\n\r\n");
+	$smtp->datasend("$message\r\n");
+	$smtp->dataend();
+
+	$smtp->quit();
+}
+
+
+#####################################################################
+# SendEmailSendmail($from_name, $from_email, $to_name, $to_email, $subject, $message)
+#
+# Sends an email using sendmail.
+#####################################################################
+sub SendEmailSendmail() {
+	my($from_name, $from_email, $to_name, $to_email, $subject, $message) = @_;
+
 	# Open a pipe to sendmail
-	open(SM, "|$sendmail $to_email") or &PrintErrorExit("Can't open pipe to <PRE>$sendmail</PRE>: $!");
+	open(SM, "|$sendmail $to_email") or
+		&PrintErrorExit("SendEmailSendmail(): " . $ls_cant_open_pipe_to{$language} .
+			" <PRE>$sendmail</PRE>: $!");
+
 	print SM "From: $from_name \<$from_email\>\r\n";
 	print SM "To: $to_name \<$to_email\>\r\n";
-	print SM "Subject: $subject\r\n\r\n$message\r\n.\r\n";
+	print SM "Subject: $subject\r\n\r\n";
+	print SM "$message\r\n";
+	print SM ".\r\n";
 	close(SM);
 }
 
 
 #####################################################################
-# EmailOK()
+# EmailOK($address)
 #
 # Checks an email address for correct format.
 # Returns 1 for pass, 0 for fail.
@@ -1471,8 +1539,15 @@ sub EscapeFileName() {
 	$file_name =~ s/\//\-/g;	# Translate slashes to dashes
 	$file_name =~ s/\\/\-/g;	# Translate backslashes to dashes
 	$file_name =~ s/\*/\-/g;	# Translate asterisks to dashes
+	$file_name =~ s/\?/\-/g;	# Translate question marks to dashes
 	$file_name =~ s/\:/\-/g;	# Translate colons to dashes
 	$file_name =~ s/\;/\-/g;	# Translate semicolons to dashes
+	$file_name =~ s/\%/\-/g;	# Translate percent signs to dashes
+	$file_name =~ s/\^/\-/g;	# Translate carets to dashes
+	$file_name =~ s/\!/\-/g;	# Translate bangs to dashes
+	$file_name =~ s/\|/\-/g;	# Translate pipes to dashes
+	$file_name =~ s/\</\-/g;	# Translate less-thans to dashes
+	$file_name =~ s/\>/\-/g;	# Translate greater-thans to dashes
 	$file_name =~ s/\"//g;		# Ditch double quotes
 	$file_name =~ s/'//g;		# Ditch single quotes
 	$file_name =~ s/`//g;		# Ditch backticks
