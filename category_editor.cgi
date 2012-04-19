@@ -4,7 +4,7 @@
 # File      : category_editor.cgi
 # Purpose   : Category editing routines.
 # Program   : ReciPants ( http://recipants.photondetector.com/ )
-# Version   : 1.1.1
+# Version   : 1.2
 # Author    : Nick Grossman <nick@photondetector.com>
 # Tab stops : 4
 #
@@ -50,12 +50,16 @@ unless($logged_in && &UserHasPermission($user_id, $perm_edit_any_category)) {
 
 # Do some quick arg checks
 if(	($cmd eq "rename"   || $cmd eq "delete") && 
-	($category_id eq "" || $category_id < 0))
+	($category_id eq "" || $category_id < 0) &&
+	($category_id !~ /^\d+$/))
 {
 	&PrintErrorExit($ls_no_category_id{$language});
 }
 
-if(($cmd eq "move" || $cmd eq "save_new") && ($parent eq "" || $parent < 0)) {
+if(	($cmd eq "move" || $cmd eq "save_new") && 
+	($parent eq ""  || $parent < 0) &&
+	($parent !~ /^\d+$/))
+{
 	&PrintErrorExit($ls_no_parent_category_id{$language});
 }
 

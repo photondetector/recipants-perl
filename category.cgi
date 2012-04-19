@@ -4,7 +4,7 @@
 # File      : category.cgi
 # Purpose   : Handles viewing by category.
 # Program   : ReciPants ( http://recipants.photondetector.com/ )
-# Version   : 1.1.1
+# Version   : 1.2
 # Author    : Nick Grossman <nick@photondetector.com>
 # Tab stops : 4
 #
@@ -34,21 +34,25 @@ require "librecipants.pl";
 
 $category_id = param('category_id');
 
-
 # _____ END GLOBAL VARIABLES ________________________________________
 
 
 &InitUser();	# Set up user info
 
 # Make sure we have input
-if(! param('category_id') && param('category_id') != 0) {
+if(! $category_id && $category_id != 0) {
 	&PrintErrorExit($ls_no_category_id{$language});
 }
 
 if(param('cmd') eq "tree") {
 	&ShowCategoryTree();
 } else {
-	&ShowCategory(param('category_id'));
+	# Filter out bad inputs.
+	unless($category_id =~ /^\d+$/) {
+	    &PrintErrorExit($ls_invalid_numeric_format{$language});
+	}
+
+	&ShowCategory($category_id);
 }
             
 &CleanExit(0);

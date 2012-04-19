@@ -4,7 +4,7 @@
 # File      : recipe_search.cgi
 # Purpose	: Searches for recipes
 # Program   : ReciPants ( http://recipants.photondetector.com/ )
-# Version   : 1.1.1
+# Version   : 1.2
 # Author    : Nick Grossman <nick@photondetector.com>
 # Tab stops : 4
 #
@@ -84,10 +84,16 @@ sub KeywordSearch() {
 
 	$output = &GetTemplate("search_results.html");
 
+	# Filter out malicious characters.
+	$search_terms =~ s/>/&gt;/g;
+	$search_terms =~ s/</&lt;/g;
+
 	# Translate * -> % wildcards
 	$search_terms =~ s/\*/%/g;
 	# Translate multiple spaces to one
 	$search_terms =~ s/ +/ /g;
+	# Escape single quotes
+	$search_terms =~ s/'/''/g;
 
 	# Put each search term into a list
 	@terms = split(" ", $search_terms);

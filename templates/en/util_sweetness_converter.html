@@ -1,0 +1,124 @@
+<SCRIPT LANGUAGE="JavaScript" TYPE="text/javascript">
+<!--
+	function BrixToBaume() {
+		// Make sure we have a number
+		if(isNaN(document.forms.brix_to_baume_form.brix.value)) {
+			alert("Degrees Brix must be a number. Please try again.");
+			document.forms.brix_to_baume_form.brix.focus();
+			return;
+		}
+
+		// Make sure the number is in range
+		if(
+			(document.forms.brix_to_baume_form.brix.value < 0) ||
+			(document.forms.brix_to_baume_form.brix.value > 100))
+		{
+			alert("Degrees Brix must be between 0 and 100. Please try again.");
+			document.forms.brix_to_baume_form.brix.focus();
+			return;
+		}
+
+		// Do conversion
+		document.forms.brix_to_baume_form.baume.value = document.forms.brix_to_baume_form.brix.value / 1.8;
+		document.forms.brix_to_baume_form.brix.focus();
+	}
+
+	function BaumeToBrix() {
+		// Make sure we have a number
+		if(isNaN(document.forms.baume_to_brix_form.baume.value)) {
+			alert("Degrees Baume must be a number. Please try again.");
+			document.forms.baume_to_brix_form.baume.focus();
+			return;
+		}
+
+		// Make sure the number is in range
+		if(
+			(document.forms.baume_to_brix_form.baume.value < 0) ||
+			(document.forms.baume_to_brix_form.baume.value > 55.55))
+		{
+			alert("Degrees Baume must be between 0 and 55.55. Please try again.");
+			document.forms.baume_to_brix_form.baume.focus();
+			return;
+		}
+
+		// Do conversion
+		document.forms.baume_to_brix_form.brix.value = document.forms.baume_to_brix_form.baume.value * 1.8;
+		document.forms.baume_to_brix_form.baume.focus();
+	}
+// -->
+</SCRIPT>
+
+
+<FORM NAME="brix_to_baume_form" ACTION="#">
+
+<TABLE BORDER="0" CELLSPACING="0" CELLPADDING="3" WIDTH="100%">
+<TR>
+	<TD ALIGN="LEFT" BGCOLOR="#CCFF99" COLSPAN="2">
+		<SPAN CLASS="section-head">Brix to Baum&eacute;</SPAN>
+	</TD>
+</TR>
+	<TD ALIGN="LEFT" BGCOLOR="#CCCCCC">
+		<SPAN CLASS="text">
+		<NOBR>
+		<INPUT TYPE="text" NAME="brix"  SIZE="4" MAXLENGTH="5" onChange="BrixToBaume();">&deg;Brix (%) = 
+		<INPUT TYPE="text" NAME="baume" SIZE="4" MAXLENGTH="5">&deg;Baum&eacute;
+		</NOBR>
+		</SPAN>
+	</TD>
+</TR><TR>
+	<TD BGCOLOR="#CCCCCC">
+		<SPAN CLASS="text">
+		<INPUT TYPE="button" VALUE="Convert Brix to Baum&eacute;" onClick="BrixToBaume();">
+		<INPUT TYPE="reset" VALUE="Clear">
+		</SPAN>
+	</TD>
+</TR>
+</TABLE>
+
+</FORM>
+
+
+<BR><BR>
+
+
+<FORM NAME="baume_to_brix_form" ACTION="#">
+
+<TABLE BORDER="0" CELLSPACING="0" CELLPADDING="3" WIDTH="100%">
+<TR>
+	<TD ALIGN="LEFT" BGCOLOR="#CCFF99" COLSPAN="2">
+		<SPAN CLASS="section-head">Baum&eacute; to Brix</SPAN>
+	</TD>
+</TR>
+	<TD ALIGN="LEFT" BGCOLOR="#CCCCCC">
+		<SPAN CLASS="text">
+		<NOBR>
+		<INPUT TYPE="text" NAME="baume" SIZE="4" MAXLENGTH="5" onChange="BaumeToBrix();">&deg;Baum&eacute; = 
+		<INPUT TYPE="text" NAME="brix"  SIZE="4" MAXLENGTH="5">&deg;Brix (%)
+		</NOBR>
+		</SPAN>
+	</TD>
+</TR><TR>
+	<TD BGCOLOR="#CCCCCC">
+		<SPAN CLASS="text">
+		<INPUT TYPE="button" VALUE="Convert Baum&eacute; to Brix" onClick="BaumeToBrix();">
+		<INPUT TYPE="reset" VALUE="Clear">
+		</SPAN>
+	</TD>
+</TR>
+</TABLE>
+
+</FORM>
+
+<BR><BR>
+
+<TABLE BORDER="0" CELLPADDING="7" CELLSPACING="0" BGCOLOR="#99CCFF">
+<TR>
+	<TD>
+		<SPAN CLASS="text">
+		<B>The temperature of the solution must be 20&deg;C/68&deg;F when measured.</B>
+		<BR><BR>
+		Every degree on the Brix scale equals 1% sugar in the solution by weight.
+		</SPAN>
+	</TD>
+</TR>
+</TABLE>

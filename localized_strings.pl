@@ -2,7 +2,7 @@
 # File      : localized_strings.pl
 # Purpose   : Localized strings for programatically-generated messages.
 # Program   : ReciPants ( http://recipants.photondetector.com/ )
-# Version   : 1.1.1
+# Version   : 1.2
 # Author    : Nick Grossman <nick@photondetector.com>
 # Tab stops : 4
 #
@@ -35,7 +35,7 @@
 # This maps supported language codes to language names. Used to generate
 # the list of available languages.
 %language_code_map = (
-	en => 'English',
+	'en' => 'English',
 );
 
 
@@ -58,6 +58,11 @@
 %ls_no_category_id = (
 	en => 'No category ID was supplied.',
 	da => 'No category ID was supplied.',
+);
+
+%ls_invalid_numeric_format = (
+	en => 'Invalid input format: must be numeric',
+	da => 'Invalid input format: must be numeric',
 );
 
 
@@ -413,6 +418,8 @@
 	da => 'Can\'t turn off Auto-Commit in the database.',
 );
 
+
+
 ##### recipe_search.cgi
 
 %ls_search_results_for = (
@@ -443,6 +450,16 @@
 %ls_advanced_search_title = (
 	en => 'Advanced Search',
 	da => 'Avanceret Søgning',
+);
+
+%ls_less_than = (
+	en => '(less than)',
+	da => '(less than)',
+);
+
+%ls_greater_than = (
+	en => '(greater than)',
+	da => '(greater than)',
 );
 
 
@@ -710,6 +727,19 @@
 );
 
 
+##### utility.cgi
+
+%ls_temperature_converter = (
+	en => 'Temperature Converter',
+	da => 'Temperature Converter',
+);
+
+%ls_sweetness_converter = (
+	en => 'Sweetness Converter',
+	da => 'Sweetness Converter',
+);
+
+
 ##### cart.cgi
 
 %ls_no_valid_destination = (
@@ -718,7 +748,8 @@
 );
 
 
-# All done! Return true
+
+# All done! Return true (DO NOT REMOVE)
 1;
 
 # END localized_strings.pl

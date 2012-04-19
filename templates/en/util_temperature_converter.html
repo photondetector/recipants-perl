@@ -1,0 +1,84 @@
+<SCRIPT LANGUAGE="JavaScript" TYPE="text/javascript">
+<!--
+	function FtoC() {
+		// Make sure we have a number
+		if(isNaN(document.forms.f_to_c_form.f.value)) {
+			alert("Degrees Farenheit must be a number. Please try again.");
+			document.forms.f_to_c_form.f.focus();
+			return;
+		}
+
+		// Do conversion
+		document.forms.f_to_c_form.c.value = (document.forms.f_to_c_form.f.value - 32) / 1.8;
+		document.forms.f_to_c_form.f.focus();
+	}
+
+	function CtoF() {
+		// Make sure we have a number
+		if(isNaN(document.forms.c_to_f_form.c.value)) {
+			alert("Degrees Centigrade must be a number. Please try again.");
+			document.forms.c_to_f_form.c.focus();
+			return;
+		}
+
+		// Do conversion
+		document.forms.c_to_f_form.f.value = document.forms.c_to_f_form.c.value * 1.8 + 32;
+		document.forms.c_to_f_form.c.focus();
+	}
+// -->
+</SCRIPT>
+
+
+<FORM NAME="c_to_f_form" ACTION="#">
+
+<TABLE BORDER="0" CELLSPACING="0" CELLPADDING="3" WIDTH="100%">
+<TR>
+	<TD ALIGN="LEFT" BGCOLOR="#CCFF99" COLSPAN="2">
+		<SPAN CLASS="section-head">Centigrade to Farenheit</SPAN>
+	</TD>
+</TR>
+	<TD ALIGN="LEFT" BGCOLOR="#CCCCCC">
+		<SPAN CLASS="text">
+		<INPUT TYPE="text" NAME="c" SIZE="4" MAXLENGTH="5" onChange="CtoF();">&deg;C = 
+		<INPUT TYPE="text" NAME="f" SIZE="4" MAXLENGTH="5">&deg;F
+		</SPAN>
+	</TD>
+	<TD ALIGN="RIGHT" BGCOLOR="#CCCCCC">
+		<SPAN CLASS="text">
+		<INPUT TYPE="button" VALUE="Convert C to F" onClick="CtoF();">
+		<INPUT TYPE="reset" VALUE="Clear">
+		</SPAN>
+	</TD>
+</TR>
+</TABLE>
+
+</FORM>
+
+
+<BR><BR>
+
+
+<FORM NAME="f_to_c_form" ACTION="#">
+
+<TABLE BORDER="0" CELLSPACING="0" CELLPADDING="3" WIDTH="100%">
+<TR>
+	<TD ALIGN="LEFT" BGCOLOR="#CCFF99" COLSPAN="2">
+		<SPAN CLASS="section-head">Farenheit to Centigrade</SPAN>
+	</TD>
+</TR>
+	<TD ALIGN="LEFT" BGCOLOR="#CCCCCC">
+		<SPAN CLASS="text">
+		<INPUT TYPE="text" NAME="f" SIZE="4" MAXLENGTH="5" onChange="FtoC();">&deg;F = 
+		<INPUT TYPE="text" NAME="c" SIZE="4" MAXLENGTH="5">&deg;C
+		</SPAN>
+	</TD>
+	<TD ALIGN="RIGHT" BGCOLOR="#CCCCCC">
+		<SPAN CLASS="text">
+		<INPUT TYPE="button" VALUE="Convert F to C" onClick="FtoC();">
+		<INPUT TYPE="reset" VALUE="Clear">
+		</SPAN>
+	</TD>
+</TR>
+</TABLE>
+
+</FORM>

@@ -4,7 +4,7 @@
 # File      : user_editor.cgi
 # Purpose   : User admin stuff.
 # Program   : ReciPants ( http://recipants.photondetector.com/ )
-# Version   : 1.1.1
+# Version   : 1.2
 # Author    : Nick Grossman <nick@photondetector.com>
 # Tab stops : 4
 #
@@ -192,6 +192,12 @@ sub EditUserScreen() {
 		return(0);
 	}
 
+	# Verify user id as numeric
+	unless($l_user_id =~ /^\d+$/) {
+		&UserSearchScreen("", "", "", $ls_invalid_numeric_format{$language});
+		return(0);
+	}
+
 	$output = &GetTemplate("user_edit.html");
 
 	# Get user info
@@ -248,6 +254,12 @@ sub SaveUser() {
 		&PrintErrorExit($ls_no_user_id{$language});
 	}
 
+	# Verify user id as numeric
+	unless($l_user_id =~ /^\d+$/) {
+		&UserSearchScreen("", "", "", $ls_invalid_numeric_format{$language});
+		return(0);
+	}
+
 	$l_user_name     = &DBEscapeString(trim(param('user_name')));
 	$user_name_lower = lc($l_user_name);
 	$email           = &DBEscapeString(trim(param('email')));
@@ -256,7 +268,7 @@ sub SaveUser() {
 	$now_utime       = time();
 
 	# Check for required args
-	unless($l_user_name) {
+	unless($user_name_lower) {
 		&PrintErrorExit($ls_missing_user_name{$language});
 	}
 
@@ -356,11 +368,13 @@ sub SaveUser() {
 		# Give back whatever we got
 		@permissions = param('permissions');
 		foreach $permission (@permissions) {
-			$sth = &ExecSQL(
-				"INSERT INTO user_access_grants " .
-				"(user_id, permission_id, granter_user_id, grant_utime) " .
-				"VALUES ($l_user_id, $permission, $user_id, '$now_utime')"
-				);
+			if($permission =~ /^\d+$/) {	# Verify permission ids as numeric
+				$sth = &ExecSQL(
+					"INSERT INTO user_access_grants " .
+					"(user_id, permission_id, granter_user_id, grant_utime) " .
+					"VALUES ($l_user_id, $permission, $user_id, '$now_utime')"
+					);
+			}
 		}
 	}
 

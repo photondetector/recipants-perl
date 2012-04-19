@@ -4,7 +4,7 @@
 # File      : recipe.cgi
 # Purpose   : Handles display, scaling, and format conversion of recipes.
 # Program   : ReciPants ( http://recipants.photondetector.com/ )
-# Version   : 1.1.1
+# Version   : 1.2
 # Author    : Nick Grossman <nick@photondetector.com>
 # Tab stops : 4
 #
@@ -46,17 +46,28 @@ unless($recipe_id) {
 	&PrintErrorExit($ls_no_recipe_id{$language});
 }
 
+# Validate the recipe ID
+unless($recipe_id =~ /^\d+$/) {
+	&PrintErrorExit($ls_no_recipe_id{$language});
+}
+
+# Validate the scale factor
+$scale_factor = param('scale_factor');
+if (($scale_factor ne "") && ($scale_factor !~ /^\d*\.?\d+$/)) {
+	&PrintErrorExit($ls_no_recipe_id{$language});
+}
+
 # Figure out our output format and do it. HTML is default.
 if(param('format') eq "xml") {		# XML uses the RecipeML DTD
-	&RenderRecipeXML($recipe_id, param('scale_factor'));
+	&RenderRecipeXML($recipe_id, $scale_factor);
 } elsif(param('format') eq "mealmaster") {
-	&RenderRecipeMealMaster($recipe_id, param('scale_factor'));
+	&RenderRecipeMealMaster($recipe_id, $scale_factor);
 } elsif(param('format') eq "html_printer") {
-	&RenderRecipeHTMLPrinterFriendly($recipe_id, param('scale_factor'));
+	&RenderRecipeHTMLPrinterFriendly($recipe_id, $scale_factor);
 } elsif(param('cmd') eq "email") {
 	&EmailRecipe($recipe_id);
 } else {
-	&RenderRecipeHTML($recipe_id, param('scale_factor'));
+	&RenderRecipeHTML($recipe_id, $scale_factor);
 }
 
 &CleanExit(0);
@@ -670,7 +681,8 @@ sub EmailRecipe() {
 
 	$from_email = &GetUserEmail($user_id);
 
-	$message = &trim(param('message'));	# Firld not required
+	# XXX: Potentially unsafe... we're not filtering the email message.
+	$message = &trim(param('message'));	# Field not required
 	unless($message) {
 		$message = $ls_no_message{$language};
 	}

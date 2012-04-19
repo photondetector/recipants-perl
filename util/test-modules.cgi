@@ -4,7 +4,7 @@
 # File      : test-modules.cgi
 # Purpose   : Diagnostic - tests for required Perl modules.
 # Program   : ReciPants ( http://recipants.photondetector.com/ )
-# Version   : 1.1.1
+# Version   : 1.2
 # Author    : Nick Grossman <nick@photondetector.com>
 # Tab stops : 4
 #
@@ -81,6 +81,12 @@ print "Content-type: text/html\r\n\r\n";
 		name		=> "DBD::mysql",
 		description => "Driver for MySQL databases. Only required if you use MySQL as your database.",
 		url			=> "http://search.cpan.org/author/RUDY/DBD-mysql-2.9002/",
+		},
+
+	{
+		name		=> "DBD::Oracle",
+		description => "Driver for Oracle databases. Only required if you use Oracle as your database.",
+		url			=> "http://search.cpan.org/author/TIMB/DBD-Oracle-1.15/",
 		}
 );
 
@@ -130,9 +136,8 @@ print <<EOD;
 		<BR><BR>
 
 		<B>
-		Modules in <FONT COLOR="#009933"><B>green</B></FONT> are installed and OK;
-		modules in <FONT COLOR="#FF0000"><B>red</B></FONT> could not be found on your
-		system.
+		Modules in <FONT COLOR="#009933"><B>green</B></FONT> are installed and presumed OK;
+		modules in <FONT COLOR="#FF0000"><B>red</B></FONT> could not be found on your system.
 		</B>
 
 		<BR><BR>

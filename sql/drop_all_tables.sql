@@ -3,8 +3,7 @@
 --              ReciPants DATA!
 -- Author:		Nick Grossman <nick@photondetector.com>
 -- Tab stops:	4
--- Version:		1.1
-
+-- Version:		1.2
 
 DROP TABLE categories;
 DROP TABLE category_entries;
@@ -19,5 +18,12 @@ DROP TABLE user_recipe_bookmarks;
 DROP TABLE users;
 DROP TABLE login_log;
 
--- END
+DROP INDEX indx_login_log_user_id;
 
+DROP SEQUENCE seq_categories_category_id;
+DROP SEQUENCE seq_recipes_recipe_id;
+DROP SEQUENCE seq_units_unit_id;
+DROP SEQUENCE seq_users_user_id;
+
+
+-- END

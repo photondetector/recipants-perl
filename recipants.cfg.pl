@@ -2,7 +2,7 @@
 # File      : recipants.cfg.pl
 # Purpose   : Configuration and global reference variables.
 # Program   : ReciPants ( http://recipants.photondetector.com/ )
-# Version   : 1.1.1
+# Version   : 1.2
 # Author    : Nick Grossman <nick@photondetector.com>
 # Tab stops : 4
 #
@@ -33,8 +33,13 @@
 
 # DB driver name
 # 	For Postgres: "Pg"
-# 	For MySQL:    "mysql"
+# 	For MySQL	: "mysql"
+#	For Oracle	: "Oracle"
 	$db_driver  = "DB_DRIVER";
+
+# Database host (hostname or IP address). Set to "LOCAL" for databases
+# running on the same machine as the Web server.
+	$db_host	= "LOCAL";
 
 # Name of database to connect to
 	$db_name	= "recipants";
@@ -44,6 +49,21 @@
 
 # Database password
 	$db_passwd  = "DB_PASSWORD";
+
+# Oracle SID to connect to. This is optional and only has an effect with 
+# Oracle databases. If you're using Oracle and want to connect differently,
+# see below to specify a custom database connnect string.
+	$oracle_sid = "";
+
+# Custom DBI database connect string. You shouldn't need this unless 
+# you're doing something non-standard with Oracle.
+#
+# Username and password will be passed as separate arguments, so if you
+# plan to pass it in your connect string, set $db_uname and $db_passwd 
+# to nothing (e.g. '$db_passwd = "";')
+#
+# Consult the DBI docs for format info.
+	$custom_db_connect_string = "";
 
 
 
@@ -96,6 +116,12 @@
 # e.g. "/ReciPants". Set to "/" to send it to any directory on your server.
 	$cookie_path = "/ReciPants";
 
+# This option makes sure that the cookie is coming from the same IP address
+# that the user signed in with. This is a good security measure, only turn 
+# it off if you have a good reason.
+# Set to 1 for on, 0 for off.
+	$verify_cookie_ip = 1;
+
 # The server's secret host key used for signing cookies. Run the 'keygen.pl'
 # script to generate a random key and use the value here.
 	$secret_host_key = "SECRET_HOST_KEY";
@@ -122,7 +148,7 @@
 # The address of your SMTP server (only required if you use SMTP)
 	$smtp_server = "smtp.mydomain.org";
 
-# The location of your system's sendmail binary (only required if you use sendmail)
+# The location of your system's sendmail binary
 	$sendmail = "/usr/sbin/sendmail";
 
 # The From: address of automated emails (welcome message, password reminder,
@@ -165,7 +191,7 @@
 ##### ReciPants application info
 
 $app_name    = "ReciPants";
-$app_version = "1.1";
+$app_version = "1.2";
 $app_url     = "http://recipants.photondetector.com/";
 
 

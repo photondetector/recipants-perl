@@ -2,7 +2,7 @@
 # File      : librecipants.pl
 # Purpose   : Library of functions and globals used in > 1 CGI.
 # Program   : ReciPants ( http://recipants.photondetector.com/ )
-# Version   : 1.1.1
+# Version   : 1.2
 # Author    : Nick Grossman <nick@photondetector.com>
 # Tab stops : 4
 #
@@ -32,6 +32,8 @@
 $send_email_method_smtp     = 0;
 $send_email_method_sendmail = 1;
 
+require "recipants.cfg.pl";
+
 use DBI;
 use CGI qw(:cgi);
 use Digest::SHA1 qw(sha1_base64);
@@ -41,8 +43,9 @@ if($send_email_method == $send_email_method_smtp) {
 	use Net::SMTP;
 }
 
+
 require "localized_strings.pl";
-require "recipants.cfg.pl";
+
 
 # Set some reasonable protective defaults
 $CGI::POST_MAX        = 1024 * 500;
@@ -74,84 +77,84 @@ $theme;				# current theme pref
 # required to screw this up.
 #####################################################################
 %ingredient_types = (
-	normal      => 1,
-	subheading  => 2,
-	divider     => 3,
-	link        => 4,
+	'normal'      => '1',
+	'subheading'  => '2',
+	'divider'     => '3',
+	'link'        => '4',
 );
 
 %unit_map_abbr2id = (
-	tsp		=> 1,
-	tbsp	=> 2,
-	c		=> 3,
-	pt		=> 4,
-	qt		=> 5,
-	gal		=> 6,
-	ml		=> 7,
-	l		=> 8,
-	oz		=> 9,
-	floz	=> 10,
-	g		=> 11,
-	kg		=> 12,
-	pinches	=> 13,
-	ea		=> 14,
-	lb		=> 15,
+	'tsp'		=> '1',
+	'tbsp'		=> '2',
+	'c'			=> '3',
+	'pt'		=> '4',
+	'qt'		=> '5',
+	'gal'		=> '6',
+	'ml'		=> '7',
+	'l'			=> '8',
+	'oz'		=> '9',
+	'floz'		=> '10',
+	'g'			=> '11',
+	'kg'		=> '12',
+	'pinches'	=> '13',
+	'ea'		=> '14',
+	'lb'		=> '15',
 );
 
 %unit_map_id2abbr = (
-	1	=> tsp,
-	2	=> TBSP,
-	3	=> c,
-	4	=> pt,
-	5	=> qt,
-	6	=> gal,
-	7	=> ml,
-	8	=> l,
-	9	=> oz,
-	10	=> floz,
-	11	=> g,
-	12	=> kg,
-	13	=> pi,
-	14	=> ea,
-	15	=> lb,
+	'1'		=> 'tsp',
+	'2'		=> 'TBSP',
+	'3'		=> 'c',
+	'4'		=> 'pt',
+	'5'		=> 'qt',
+	'6'		=> 'gal',
+	'7'		=> 'ml',
+	'8'		=> 'l',
+	'9'		=> 'oz',
+	'10'	=> 'floz',
+	'11'	=> 'g',
+	'12'	=> 'kg',
+	'13'	=> 'pi',
+	'14'	=> 'ea',
+	'15'	=> 'lb',
 );
 
 # Don't remove spaces after single-character abbreviations, they're
 # there for a reason.
 %unit_map_id2meal_master = (
-	1	=> ts,
-	2	=> tb,
-	3	=> 'c ',
-	4	=> pt,
-	5	=> qt,
-	6	=> ga,
-	7	=> ml,
-	8	=> 'l ',
-	9	=> oz,
-	10	=> fl,
-	11	=> g,
-	12	=> kg,
-	13	=> pn,
-	14	=> ea,
-	15	=> lb,
+	'1'		=> 'ts',
+	'2'		=> 'tb',
+	'3'		=> 'c ',
+	'4'		=> 'pt',
+	'5'		=> 'qt',
+	'6'		=> 'ga',
+	'7'		=> 'ml',
+	'8'		=> 'l ',
+	'9'		=> 'oz',
+	'10'	=> 'fl',
+	'11'	=> 'g',
+	'12'	=> 'kg',
+	'13'	=> 'pn',
+	'14'	=> 'ea',
+	'15'	=> 'lb',
 );
 
 %unit_map_id2name = (
-	1	=> Teaspoons,
-	2	=> Tablespoons,
-	3	=> Cups,
-	4	=> Pints,
-	5	=> Quarts,
-	6	=> Gallons,
-	7	=> Mililiters,
-	8	=> Liters,
-	9	=> Ounces,
-	10	=> 'Fluid ounces',
-	11	=> Grams,
-	12	=> Kilograms,
-	13	=> Pinches,
-	14	=> Each,
-	15	=> Pounds,
+	'1'		=> 'Teaspoons',
+	'2'		=> 'Tablespoons',
+	'3'		=> 'Cups',
+	'4'		=> 'Pints',
+	'5'		=> 'Quarts',
+	'6'		=> 'Gallons',
+	'7'		=> 'Mililiters',
+	'8'		=> 'Liters',
+	'9'		=> 'Ounces',
+	'10'	=> 'Fluid ounces',
+	'11'	=> 'Grams',
+	'12'	=> 'Kilograms',
+	'13'	=> 'Pinches',
+	'14'	=> 'Each',
+	'15'	=> 'Pounds',
 );
 
 # User status codes
@@ -445,10 +448,9 @@ sub PrintSuccessExit() {
 # Takes a hash, coverts it to a string using EncodeHashToString(),
 # signs it with an SHA-1 hash of the encoded string plus the secret 
 # host key, and base64-encodes the whole thing. Returns the encoded,
-# signed string.
+# signed string. Optionally adds the client IP address.
 #
-# The only forbidden value for a name field is 'digest' as this is
-# what the function uses to place the SHA-1 digest in.
+# The only forbidden key names are 'digest' and 'login_ip'.
 #
 # Use the returned string for the value field of your cookie. To
 # decode and authenticate the value, call CookieDecodeAuthenticate().
@@ -456,6 +458,10 @@ sub PrintSuccessExit() {
 sub CookieEncodeSign() {
 	my(%vals) = @_;
 	my($val_string, $digest);
+
+	if($verify_cookie_ip) {
+		$vals{'login_ip'} = $ENV{REMOTE_ADDR};
+	}
 
 	$val_string = &EncodeHash2String(%vals);
 
@@ -482,8 +488,14 @@ sub CookieDecodeAuthenticate() {
 	my($vals);
 
 	$val_string = decode_base64($val_string);
+	$vals       = &DecodeString2Hash($val_string);
 
-	$vals = &DecodeString2Hash($val_string);
+	# Compare login IP to current IP if in paranoid mode
+	if($verify_cookie_ip) {
+		if($vals->{'login_ip'} != $ENV{REMOTE_ADDR}) {
+			return(0);
+		}
+	}
 
 	# Verify sig - chop off "digest=<digest>", get hash, and compare
 	$val_string_no_digest = $val_string;
@@ -595,11 +607,41 @@ sub GetLanguageMenu() {
 # displaying an error if it can't connect.
 #####################################################################
 sub DBConnect() {
-	my $dbh = DBI->connect (
-		"dbi:$db_driver:dbname=$db_name",
-		$db_uname,
-		$db_passwd
-		) || &PrintErrorExit($ls_cant_connect_to_database{$language} . $DBI::errstr);
+	my($connect_string, $dbh);
+
+	# Build an appropriate connect string
+
+	# If a custom connect string is supplied, use it...
+	if($custom_db_connect_string) {
+		$connect_string = $custom_db_connect_string;
+	
+	# ...otherwise, build one
+	} else {
+		if($db_driver eq "Oracle") {
+			# Many Oracle connection options, see DBD::Oracle docs.
+			# Use the SID if we have one, which avoids having to
+			# consult tnsnames.ora every time, which is sweet as.
+			if($oracle_sid) {
+				$connect_string = "dbi:Oracle;sid=$oracle_sid";
+			} else {
+				$connect_string = "dbi:Oracle:";
+			}
+		} else {
+			$connect_string = "dbi:$db_driver:dbname=$db_name";
+		}
+	
+		if($db_host ne "LOCAL") {
+			$connect_string .= ";host=$db_host";
+
+			if($db_port) {
+				$connect_string .= ";port=$db_port";
+			}
+		}
+	}
+	
+
+	$dbh = DBI->connect($connect_string, $db_uname, $db_passwd) || 
+		&PrintErrorExit($ls_cant_connect_to_database{$language} . $DBI::errstr);
 	
 	return($dbh);
 }
@@ -625,13 +667,20 @@ sub ExecSQL() {
 
 	# Prepare statement
 	unless($statement_handle = $dbh->prepare($sql)) {
-		&PrintErrorExit($cant_prepare_sql{$language} . $dbh->errstr());
+		&PrintErrorExit($ls_cant_prepare_sql{$language} . $dbh->errstr());
 	}
 
 	# Execute statement
 	unless($statement_handle->execute()) {
-		&PrintErrorExit($cant_execute_sql{$language} . $dbh->errstr() . 
-			"<BR><BR>SQL: <CODE><B>$sql</B></CODE>");
+		# Log offending SQL. Integrate into logger!
+		print STDERR 
+			"[" . &UnixTimeToString(time()) . "] " .
+			"[error] " .
+			"[client " . $ENV{'REMOTE_HOST'} . "] " .
+			"$app_name: Can't execute SQL statement \"$sql\": " 
+			. $dbh->errstr() .
+			"\n";
+		&PrintErrorExit($ls_cant_execute_sql{$language} . $dbh->errstr());
 	}
 
 	return($statement_handle);
@@ -1450,11 +1499,13 @@ sub SendEmailSendmail() {
 #
 # I lifted this regex from 
 # http://aspn.activestate.com/ASPN/Cookbook/Rx/Recipe/59886
+#
+# Patch submitted by XXX to accept hyphens in mailbox names. Thanks!
 #####################################################################
 sub EmailOK() {
 	my($address) = @_;
 
-	if($address =~ /^([A-Z0-9]+[._]?){1,}[A-Z0-9]+\@(([A-Z0-9]+[-]?){1,}[A-Z0-9]+\.){1,}[A-Z]{2,4}$/i) {
+	if($address =~ /^([A-Z0-9]+[._-]?){1,}[A-Z0-9]+\@(([A-Z0-9]+[-]?){1,}[A-Z0-9]+\.){1,}[A-Z]{2,4}$/i) {
 		return(1);
 	} else {
 		return(0);
@@ -1500,6 +1551,31 @@ sub trim() {
 	my($string) = @_;
 	$string =~ s/^\s*(.*?)\s*$/$1/;
 	return($string);
+}
+
+
+#####################################################################
+# EnforceFormatNumeric($number)
+#
+# Makes sure that $number contains only numeric characters. Prevents
+# hacks from stuff appended to user, category, recipe, etc. IDs.
+# 
+# On success, returns the number. On failure, exits the program.
+# 
+# Thanks to Jon McClintock!
+#####################################################################
+sub EnforceFormatNumeric() {
+	my($should_be_number) = @_;
+
+	unless($should_be_number) {
+		&PrintErrorExit($ls_invalid_input_format_numeric{$language});
+	}
+
+	if($should_be_number =~ /^\d+$/) {
+		return($should_be_number);
+	} else {
+		&PrintErrorExit($ls_invalid_input_format_numeric{$language});
+	}
 }
 
 
@@ -1566,7 +1642,8 @@ sub UnixTimeToString() {
 	my($sec, $min, $hour, $mday, $mon, $year, $wday, $yday, $isdst) = 
 		localtime($unix_time);
 
-	$year += 1900;
+	$year  += 1900;
+	$month += 1;
 
 	# Zero-pad single-length values
 	if(length($hour) == 1) { $hour = "0" . $hour; }

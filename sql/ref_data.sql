@@ -2,7 +2,7 @@
 -- Description:	Reference data for recipe manager lookup tables
 -- Author:		Nick Grossman <nick@photondetector.com>
 -- Tab stops:	4
--- Version:		1.1
+-- Version:		1.2
 
 
 -- Unit codes
