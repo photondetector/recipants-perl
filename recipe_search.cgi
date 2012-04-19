@@ -4,7 +4,7 @@
 # File      : recipe_search.cgi
 # Purpose	: Searches for recipes
 # Program   : ReciPants ( http://recipants.photondetector.com/ )
-# Version   : 1.0
+# Version   : 1.0.1
 # Author    : Nick Grossman <nick@photondetector.com>
 # Tab stops : 4
 #

@@ -4,7 +4,7 @@
 # File      : sysinfo.cgi
 # Purpose   : System information and statistics
 # Program   : ReciPants ( http://recipants.photondetector.com/ )
-# Version   : 1.0
+# Version   : 1.0.1
 # Author    : Nick Grossman <nick@photondetector.com>
 # Tab stops : 4
 #

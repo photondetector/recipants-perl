@@ -4,7 +4,7 @@
 # File      : recipe_editor.cgi
 # Program   : ReciPants ( http://recipants.photondetector.com/ )
 # Purpose	: Handles recipe creation and editing.
-# Version   : 1.0
+# Version   : 1.0.1
 # Author    : Nick Grossman <nick@photondetector.com>
 # Tab stops : 4
 #
@@ -347,7 +347,7 @@ sub UpdateRecipeBaseInfo() {
 	$sth = &ExecSQL(
 		"UPDATE recipes " .
 		"SET name='$name', yield_qty=$yield_qty, yield_units='$yield_units', " .
-			"source='$source', mod_date='$now_utime' " .
+			"source='$source', mod_utime='$now_utime' " .
 		"WHERE recipe_id=$l_recipe_id"
 		);
 }
@@ -429,12 +429,10 @@ sub InsertRecipeIngredientsFormatted() {
 
 	foreach $this_ingredient_line (split(/\n/, $ingredients_formatted)) {	# split lump into lines
 
-		##### TEST REGEX!! #####
-		#unless($thi_ingredient_line =~ /\w*\*\d+(?:\s+\d+\/\d+)?\*\w*/) {
-		#	bail();
-		#}
-# grab that number into $1, which you'd do by enclosing everything between
-# the \*s in parentheses.
+		# Veryify format
+		unless($this_ingredient_line =~ /\w+\*\d+[\/\.]*\d*\*\w+/) {
+			&EditRecipeScreenError($ls_bad_ingredient_format{$language});
+		}
 
 		($name, $qty, $unit_abbr) = split(/\*/, $this_ingredient_line);
 		chomp($name, $qty, $unit_abbr);

@@ -2,7 +2,7 @@
 # File      : localized_strings.pl
 # Purpose   : Localized strings for programatically-generated messages.
 # Program   : ReciPants ( http://recipants.photondetector.com/ )
-# Version   : 1.0
+# Version   : 1.0.1
 # Author    : Nick Grossman <nick@photondetector.com>
 # Tab stops : 4
 #
@@ -290,6 +290,11 @@
 
 
 ##### recipe_editor.cgi
+
+%ls_bad_ingredient_format = (
+	en => 'Looks like a bad ingredient format. Please check the <B>Ingredients</B> box.',
+	da => 'Looks like a bad ingredient format. Please check the <B>Ingredients</B> box.',
+);
 
 %ls_add_new_recipe = (
 	en => 'Add New Recipe',

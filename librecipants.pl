@@ -2,7 +2,7 @@
 # File      : librecipants.pl
 # Purpose   : Library of functions and globals used in > 1 CGI.
 # Program   : ReciPants ( http://recipants.photondetector.com/ )
-# Version   : 1.0
+# Version   : 1.0.1
 # Author    : Nick Grossman <nick@photondetector.com>
 # Tab stops : 4
 #

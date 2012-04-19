@@ -5,7 +5,7 @@
 # Purpose   : Non-admin user stuff: login/out, registration, password
 #             reminder, preferences.
 # Program   : ReciPants ( http://recipants.photondetector.com/ )
-# Version   : 1.0
+# Version   : 1.0.1
 # Author    : Nick Grossman <nick@photondetector.com>
 # Tab stops : 4
 #

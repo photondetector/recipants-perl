@@ -4,7 +4,7 @@
 # File      : category.cgi
 # Purpose   : Generates a random string to be used as the secret host key.
 # Program   : ReciPants ( http://recipants.photondetector.com/ )
-# Version   : 1.0
+# Version   : 1.0.1
 # Authors   : Authors of Scoop ( http://scoop.kuro5hin.org/ )
 #             Nick Grossman <nick@photondetector.com>
 # Tab stops : 4

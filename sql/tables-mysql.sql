@@ -2,10 +2,7 @@
 -- Description:	DDL for ReciPants schema, MySQL version
 -- Author:		Nick Grossman <nick@photondetector.com>
 -- Tab stops:	4
--- Version:		1.0
---
--- REVISION HISTORY
--- v1.0 		20 Sept 2003 - Initial version
+-- Version:		1.0.1
 
 
 ------------
@@ -42,9 +39,10 @@ CREATE TABLE ingredients (
 	ingredient_type 	INT4 			NOT NULL,
 	sub_recipe_id 		INT4			,
 	name 				VARCHAR(100) 	NOT NULL,
-	qty 				INT2			NOT NULL,
+	qty					NUMERIC			NOT NULL,
 	unit_id 			INT4 			NOT NULL,
-	CONSTRAINT 			pk_ingredients PRIMARY KEY (ingredient_id)
+	CONSTRAINT 			pk_ingredients PRIMARY KEY (ingredient_id),
+	INDEX				indx_ingredients_recipe_id (recipe_id)
 );
 
 

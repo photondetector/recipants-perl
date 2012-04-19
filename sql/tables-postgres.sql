@@ -2,10 +2,7 @@
 -- Description:	DDL for ReciPants schema, Postgres version
 -- Author:		Nick Grossman <nick@photondetector.com>
 -- Tab stops:	4
--- Version:		1.0
---
--- REVISION HISTORY
--- v1.0 		20 Sept 2003 - Initial version
+-- Version:		1.0.1
 
 
 ------------
@@ -42,7 +39,7 @@ CREATE TABLE ingredients (
 	ingredient_type 	INT4 			NOT NULL,
 	sub_recipe_id 		INT4			,
 	name 				VARCHAR(100) 	NOT NULL,
-	qty 				INT2			NOT NULL,
+	qty 				NUMERIC			NOT NULL,
 	unit_id 			INT4 			NOT NULL,
 	CONSTRAINT 			pk_ingredients PRIMARY KEY (ingredient_id)
 );
@@ -133,6 +130,9 @@ CREATE INDEX indx_login_log_user_id
 CREATE INDEX indx_instructions_recipe_id
 	ON instructions (recipe_id);
 
+CREATE INDEX indx_ingredients_recipe_id
+	ON ingredients (recipe_id);
+
 CREATE INDEX indx_user_access_grants_uid
 	ON user_access_grants (user_id);
 
@@ -155,6 +155,11 @@ ALTER TABLE category_entries
 
 ALTER TABLE instructions
 	ADD CONSTRAINT fk_instructions_recipe_id_type
+	FOREIGN KEY (recipe_id)
+	REFERENCES recipes (recipe_id);
+
+ALTER TABLE ingredients
+	ADD CONSTRAINT fk_ingredients_recipe_id
 	FOREIGN KEY (recipe_id)
 	REFERENCES recipes (recipe_id);
 

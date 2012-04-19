@@ -2,7 +2,7 @@
 # File      : recipants.cfg.pl
 # Purpose   : Configuration and global reference variables.
 # Program   : ReciPants ( http://recipants.photondetector.com/ )
-# Version   : 1.0
+# Version   : 1.0.1
 # Author    : Nick Grossman <nick@photondetector.com>
 # Tab stops : 4
 #
@@ -157,7 +157,7 @@
 ##### ReciPants application info
 
 $app_name    = "ReciPants";
-$app_version = "1.0";
+$app_version = "1.0.1";
 $app_url     = "http://recipants.photondetector.com/";
 
 
