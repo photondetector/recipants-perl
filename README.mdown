@@ -104,7 +104,7 @@ This will create a tree that looks a lot like this:
 Create a database and database user for ReciPants. See your database's documentation for instructions.
 
 
-### Load the DB schema and reference data:
+#### Load the DB schema and reference data
 Go to the sql directory.
 
 Execute the appropriate tables SQL script for your database (tables-postgres.sql for Postgres, tables-mysql.sql for MySQL, tables-oracle.sql for Oracle). This will create all the database objects that ReciPants needs.
